@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import WelcomePage from "./welcomePage";
+import Home from "./home";
 import "./index.css";
 
 export default function App() {
@@ -9,7 +10,7 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={<Home/>}/> */}
+          <Route path="/home" element={<Home />} />
           <Route path="/" element={<WelcomePage />} />
         </Routes>
       </BrowserRouter>
