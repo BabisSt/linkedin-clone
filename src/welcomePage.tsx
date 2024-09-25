@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import WelcomeButton from "./components/WelcomeButton";
 
 export default function WelcomePage() {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [LoginUsername, setLoginUsername] = useState("");
+  const [LoginPassword, setLoginPassword] = useState("");
+  const [RegisterUsername, setRegisterUsername] = useState("");
+  const [RegisterPassword, setRegisterPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [registerError, setRegisterError] = useState("");
   const navigate = useNavigate(); //redirect to another page
 
   const toggleLogin = () => {
@@ -18,22 +22,50 @@ export default function WelcomePage() {
   };
 
   //Need to specify the event type
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleLoginUsernameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setLoginUsername(event.target.value);
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+  const handleLoginPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setLoginPassword(event.target.value);
   };
 
   //check if username and password are empty, else navigate to home
   const handleLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!username || !password) {
-      setError("Username and password cannot be empty.");
+    if (!LoginUsername || !LoginPassword) {
+      setLoginError("Username and password cannot be empty.");
     } else {
-      setError("");
+      setLoginError("");
+      navigate("/home");
+    }
+  };
+
+  const handleRergisterUsernameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRegisterUsername(event.target.value);
+  };
+
+  const handleRegisterPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRegisterPassword(event.target.value);
+  };
+
+  //check if username and password are empty, else navigate to home
+  const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    if (!RegisterUsername || !RegisterPassword) {
+      setRegisterError("Username and password cannot be empty.");
+    } else {
+      setRegisterError("");
       navigate("/home");
     }
   };
@@ -49,60 +81,35 @@ export default function WelcomePage() {
         </span>
       </h1>
 
-      <div className="flex justify-center">
-        <div className="grid grid-cols-4 gap-4">
-          <div className="">
-            <button
-              onClick={toggleLogin}
-              className="bg-blue-200 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2 mb-4"
-            >
-              Already have an account?
-            </button>
-            {openLogin && (
-              <div>
-                <h3>Username</h3>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={handleUsernameChange}
-                  className="border border-gray-400 rounded px-2 py-1 mt-1 mb-2"
-                />
-
-                <h3>Password</h3>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  className="border border-gray-400 rounded px-2 py-1 mt-1"
-                />
-
-                {error && <p className="text-red-500">{error}</p>}
-
-                <button
-                  onClick={handleLogin}
-                  className="bg-blue-200 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2 mb-4"
-                >
-                  Login
-                </button>
-              </div>
-            )}
+      <div className="flex justify-center mt-20">
+        <div className="grid grid-cols-1 md:grid-cols-5">
+          <div className="col-start-1 col-end-3 md:col-start-1 md:col-end-3 w-55 md:w-64">
+            <WelcomeButton
+              text={"Already have an account"}
+              toggleMenu={toggleLogin}
+              menu={openLogin}
+              username={LoginUsername}
+              handleUsernameChange={handleLoginUsernameChange}
+              password={LoginPassword}
+              handlePasswordChange={handleLoginPasswordChange}
+              error={loginError}
+              handleFunctionality={handleLogin}
+              buttonText="Login"
+            />
           </div>
-          <div className="">
-            <button
-              onClick={toggleRegister}
-              className="bg-blue-200 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mt-2 mb-4"
-            >
-              Else make a new one
-            </button>
-            {openRegister && (
-              <div>
-                <h3>Username</h3>
-                <input className="border border-gray-400 rounded px-2 py-1 mt-1 mb-2" />
-
-                <h3>Password</h3>
-                <input className="border border-gray-400 rounded px-2 py-1 mt-1" />
-              </div>
-            )}
+          <div className="col-end-7 col-span-2 md:col-end-7 md:col-span-2 w-55 md:w-64">
+            <WelcomeButton
+              text={"Else make a new one"}
+              toggleMenu={toggleRegister}
+              menu={openRegister}
+              username={RegisterUsername}
+              handleUsernameChange={handleRergisterUsernameChange}
+              password={RegisterPassword}
+              handlePasswordChange={handleRegisterPasswordChange}
+              error={registerError}
+              handleFunctionality={handleRegister}
+              buttonText="Register"
+            />
           </div>
         </div>
       </div>
