@@ -3,16 +3,29 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import WelcomePage from "./welcomePage";
 import Home from "./home";
+import NavBar from "./components/NavBar";
+import PrivateRoute from "./components/PrivateRoute";
+import Unauthorized from "./unauthorized";
+import Footer from "./components/Footer";
 import "./index.css";
 
+/**
+ *
+ */
 export default function App() {
+  //prevent nav, footer appearing in welcomepage
+  const showNavFooter = window.location.pathname !== "/";
+
   return (
     <div>
       <BrowserRouter>
+        {showNavFooter && <NavBar />}
         <Routes>
-          <Route path="/home" element={<Home />} />
           <Route path="/" element={<WelcomePage />} />
+          <Route path="/404" element={<Unauthorized />} />
+          <Route path="/home" element={<PrivateRoute element={<Home />} />} />
         </Routes>
+        {showNavFooter && <Footer />}
       </BrowserRouter>
     </div>
   );

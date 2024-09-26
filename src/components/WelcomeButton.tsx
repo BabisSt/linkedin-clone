@@ -1,6 +1,7 @@
 import React, { ChangeEventHandler, MouseEventHandler } from "react";
 
 /** typescript shenanigans
+ * TODO: need to add more optional fields for register only
  * @interface WelcomeButtonProps have to declare all prop types
  */
 interface WelcomeButtonProps {
@@ -33,7 +34,7 @@ export default function WelcomeButton({
       <button
         onClick={toggleMenu}
         className="font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 
-                   transition-transform transform active:scale-95" // Added animation classes
+                   transition-transform transform active:scale-95"
       >
         {text}
       </button>
