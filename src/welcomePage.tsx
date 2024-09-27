@@ -2,13 +2,23 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WelcomeButton from "./components/WelcomeButton";
 
-export default function WelcomePage() {
+/**
+ * To show nav footer on main pages
+ * (value: boolean): This part indicates that the function takes a single argument named value, which must be of type boolean.
+ * => void: This indicates that the function does not return any value (void means no return).
+ */
+interface WelcomePageProps {
+  setShowNavFooter: (value: boolean) => void;
+}
+
+export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const [LoginUsername, setLoginUsername] = useState("");
   const [LoginPassword, setLoginPassword] = useState("");
   const [RegisterUsername, setRegisterUsername] = useState("");
   const [RegisterPassword, setRegisterPassword] = useState("");
+  const [RegisterEmail, setRegisterEmail] = useState("");
   const [loginError, setLoginError] = useState("");
   const [registerError, setRegisterError] = useState("");
   const navigate = useNavigate(); //redirect to another page
@@ -43,6 +53,7 @@ export default function WelcomePage() {
     } else {
       setLoginError("");
       navigate("/home");
+      setShowNavFooter(true);
     }
   };
 
@@ -58,15 +69,22 @@ export default function WelcomePage() {
     setRegisterPassword(event.target.value);
   };
 
+  const handleRegisterEmailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRegisterEmail(event.target.value);
+  };
+
   //check if username and password are empty, else navigate to home
   const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!RegisterUsername || !RegisterPassword) {
-      setRegisterError("Username and password cannot be empty.");
+    if (!RegisterUsername || !RegisterPassword || !RegisterEmail) {
+      setRegisterError("Username, password and email cannot be empty.");
     } else {
       setRegisterError("");
       navigate("/home");
+      setShowNavFooter(true);
     }
   };
 
@@ -106,6 +124,9 @@ export default function WelcomePage() {
               handleUsernameChange={handleRergisterUsernameChange}
               password={RegisterPassword}
               handlePasswordChange={handleRegisterPasswordChange}
+              isRegister={true}
+              email={RegisterEmail}
+              handleEmailChange={handleRegisterEmailChange}
               error={registerError}
               handleFunctionality={handleRegister}
               buttonText="Register"

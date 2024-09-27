@@ -4,7 +4,7 @@ import logo from "/LinkedIn_logo_.png";
 import { useNavigate } from "react-router-dom";
 
 /**
- * TODO: hide navbar in welcomePage
+ *
  */
 export default function NavBar() {
   const navigate = useNavigate();

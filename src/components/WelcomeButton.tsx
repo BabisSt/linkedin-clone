@@ -1,7 +1,6 @@
 import React, { ChangeEventHandler, MouseEventHandler } from "react";
 
 /** typescript shenanigans
- * TODO: need to add more optional fields for register only
  * @interface WelcomeButtonProps have to declare all prop types
  */
 interface WelcomeButtonProps {
@@ -15,6 +14,9 @@ interface WelcomeButtonProps {
   error: string;
   handleFunctionality: MouseEventHandler<HTMLButtonElement>;
   buttonText: string;
+  isRegister?: boolean; // questionmark marks argument as optional
+  email?: string;
+  handleEmailChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 export default function WelcomeButton({
@@ -28,6 +30,9 @@ export default function WelcomeButton({
   error,
   handleFunctionality,
   buttonText,
+  isRegister,
+  email,
+  handleEmailChange,
 }: WelcomeButtonProps) {
   return (
     <div>
@@ -54,6 +59,17 @@ export default function WelcomeButton({
             onChange={handlePasswordChange}
             className="border border-gray-400 rounded px-2 py-1 mt-1 mb-5 "
           />
+          {isRegister && (
+            <div>
+              <h3>Email</h3>
+              <input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                className="border border-gray-400 rounded px-2 py-1 mt-1 mb-5 "
+              />
+            </div>
+          )}
           {error && <p className="text-red-500">{error}</p>}
           <button
             onClick={handleFunctionality}
