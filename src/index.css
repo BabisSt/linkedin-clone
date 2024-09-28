@@ -13,3 +13,25 @@
     }
   }
 }
+
+/* Ensure the app container fills the viewport */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 60px; /* Adjust based on your NavBar height */
+}
+
+/* Adjust the content to take up the remaining space */
+.content {
+  flex: 1;
+  padding: 16px; /* Optional padding for content */
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it's above other content */
+}

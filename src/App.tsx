@@ -16,17 +16,22 @@ export default function App() {
   );
 
   return (
-    <div>
+    <div className="app-container">
       <BrowserRouter>
-        {showNavFooter && <NavBar />}
-        <Routes>
-          <Route
-            path="/"
-            element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
-          />
-          <Route path="/404" element={<Unauthorized />} />
-          <Route path="/home" element={<PrivateRoute element={<Home />} />} />
-        </Routes>
+        {showNavFooter && <NavBar setShowNavFooter={setShowNavFooter} />}
+        <div className="content">
+          <Routes>
+            <Route
+              path="/"
+              element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
+            />
+            <Route
+              path="/404"
+              element={<Unauthorized setShowNavFooter={setShowNavFooter} />}
+            />
+            <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+          </Routes>
+        </div>
         {showNavFooter && <Footer />}
       </BrowserRouter>
     </div>

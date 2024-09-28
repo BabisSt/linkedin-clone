@@ -3,12 +3,19 @@ import React from "react";
 import logo from "/LinkedIn_logo_.png";
 import { useNavigate } from "react-router-dom";
 
-/**
- *
- */
-export default function NavBar() {
+interface NavBarProps {
+  setShowNavFooter: (value: boolean) => void;
+}
+
+export default function NavBar({ setShowNavFooter }: NavBarProps) {
   const navigate = useNavigate();
-  const routeChange = () => {
+  const routeHome = () => {
+    navigate("/home");
+  };
+
+  const Logout = () => {
+    //hide nav and footer on logout
+    setShowNavFooter(false);
     navigate("/");
   };
   return (
@@ -17,7 +24,7 @@ export default function NavBar() {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <button
             className="flex flex-wrap items-center justify-between"
-            onClick={routeChange}
+            onClick={routeHome}
           >
             <img src={logo} className="h-8" alt="LinkedIn Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -72,6 +79,11 @@ export default function NavBar() {
                 </a>
               </li>
             </ul>
+            <button onClick={Logout}>
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+                LinkedIn
+              </span>
+            </button>
           </div>
         </div>
       </nav>
