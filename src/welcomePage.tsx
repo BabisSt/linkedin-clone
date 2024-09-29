@@ -19,16 +19,19 @@ export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
   const [RegisterUsername, setRegisterUsername] = useState("");
   const [RegisterPassword, setRegisterPassword] = useState("");
   const [RegisterEmail, setRegisterEmail] = useState("");
+  const [RegisterPhoto, setRegisterPhoto] = useState("");
   const [loginError, setLoginError] = useState("");
   const [registerError, setRegisterError] = useState("");
   const navigate = useNavigate(); //redirect to another page
 
   const toggleLogin = () => {
     setOpenLogin(!openLogin);
+    setOpenRegister(false);
   };
 
   const toggleRegister = () => {
     setOpenRegister(!openRegister);
+    setOpenLogin(false);
   };
 
   //Need to specify the event type
@@ -75,12 +78,24 @@ export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
     setRegisterEmail(event.target.value);
   };
 
+  const handleRegisterRegisterChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    //take file
+    if (event.target.files !== null)
+      setRegisterPhoto(URL.createObjectURL(event.target.files[0]));
+  };
   //check if username and password are empty, else navigate to home
   const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!RegisterUsername || !RegisterPassword || !RegisterEmail) {
-      setRegisterError("Username, password and email cannot be empty.");
+    if (
+      !RegisterUsername ||
+      !RegisterPassword ||
+      !RegisterEmail ||
+      !RegisterPhoto
+    ) {
+      setRegisterError("Username, password,email and photo cannot be empty.");
     } else {
       setRegisterError("");
       navigate("/home");
@@ -129,6 +144,8 @@ export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
               handleEmailChange={handleRegisterEmailChange}
               error={registerError}
               handleFunctionality={handleRegister}
+              photo={RegisterPhoto}
+              handlePhotoChange={handleRegisterRegisterChange}
               buttonText="Register"
             />
           </div>
