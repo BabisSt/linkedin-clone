@@ -70,11 +70,17 @@ export default function Post({
             handler={handlePhotoClick}
             className="flex items-center justify-center backdrop-blur-md fixed inset-0 z-50"
             onClick={handleClose}
+            placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
             <div className="fixed inset-0 opacity-50" onClick={handleClose} />
             <DialogBody
               className="flex items-center justify-center p-0"
               onClick={(e) => e.stopPropagation()}
+              placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               <img
                 alt="nature"

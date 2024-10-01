@@ -18,7 +18,14 @@ export default function App() {
   return (
     <div className="app-container">
       <BrowserRouter>
-        {showNavFooter && <NavBar setShowNavFooter={setShowNavFooter} />}
+        {showNavFooter && (
+          <NavBar
+            // userPhoto={
+            //   "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+            // }
+            setShowNavFooter={setShowNavFooter}
+          />
+        )}
         <div className="content">
           <Routes>
             <Route

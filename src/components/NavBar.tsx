@@ -1,23 +1,53 @@
-import React from "react";
-
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/LinkedIn_logo_.png";
-import { useNavigate } from "react-router-dom";
+import userImage from "/user.png";
 
 interface NavBarProps {
   setShowNavFooter: (value: boolean) => void;
+  userPhoto?: string;
 }
 
-export default function NavBar({ setShowNavFooter }: NavBarProps) {
+export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const routeHome = () => {
     navigate("/home");
   };
 
   const Logout = () => {
-    //hide nav and footer on logout
     setShowNavFooter(false);
     navigate("/");
   };
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const getButtonClass = (path: string) =>
+    location.pathname === path
+      ? " font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg p-2.5 text-center transition-transform transform"
+      : "block font-semibold p-2.5 rounded text-white hover:bg-cyan-950 ";
+
   return (
     <div>
       <nav className="bg-sky-800 fixed rounded-lg shadow w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -27,63 +57,121 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
             onClick={routeHome}
           >
             <img src={logo} className="h-8" alt="LinkedIn Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               LinkedIn
             </span>
           </button>
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
             <button
-              data-collapse-toggle="navbar-sticky"
               type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="navbar-sticky"
-              aria-expanded="false"
-            ></button>
+              className="flex text-sm bg-blue-200 rounded-full md:me-0 ring-4 focus:ring-4 focus:ring-cyan-950 dark:focus:ring-cyan-950"
+              id="user-menu-button"
+              aria-expanded={isUserMenuOpen}
+              onClick={toggleUserMenu}
+            >
+              <img
+                className="w-8 h-8 rounded-full"
+                src={userPhoto ? userPhoto : userImage}
+              />
+            </button>
+
+            <div
+              ref={userMenuRef}
+              className={`absolute left-0 top-full mt-2 z-50 ${
+                isUserMenuOpen ? "block" : "hidden"
+              } text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-sky-700 dark:divide-gray-600 w-auto`}
+              id="user-dropdown"
+            >
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">
+                  Bonnie Green
+                </span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                  name@flowbite.com
+                </span>
+              </div>
+              <ul className="py-2" aria-labelledby="user-menu-button">
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
+                    onClick={Logout}
+                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:text-white"
+                  >
+                    Dashboard
+                  </button>
+                </li>
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
+                    onClick={Logout}
+                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Settings
+                  </button>
+                </li>
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
+                    onClick={Logout}
+                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Earnings
+                  </button>
+                </li>
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
+                    onClick={Logout}
+                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Sign out
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
           <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="navbar-sticky"
+            id="navbar-user"
           >
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-sky-800 md:dark:bg-sky-800 dark:border-gray-700">
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
+            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 ">
+              <li className="">
+                <button
+                  onClick={() => navigate("/home")}
+                  className={getButtonClass("/home")}
                 >
                   Home
-                </a>
+                </button>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              <li className="">
+                <button
+                  onClick={() => navigate("/about")}
+                  className={getButtonClass("/about")}
                 >
                   About
-                </a>
+                </button>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              <li className="">
+                <button
+                  onClick={() => navigate("/services")}
+                  className={getButtonClass("/services")}
                 >
                   Services
-                </a>
+                </button>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              <li className="">
+                <button
+                  onClick={() => navigate("/pricing")}
+                  className={getButtonClass("/pricing")}
+                >
+                  Pricing
+                </button>
+              </li>
+              <li className="">
+                <button
+                  onClick={() => navigate("/contact")}
+                  className={getButtonClass("/contact")}
                 >
                   Contact
-                </a>
+                </button>
               </li>
             </ul>
-            <button onClick={Logout}>
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                LinkedIn
-              </span>
-            </button>
           </div>
         </div>
       </nav>
