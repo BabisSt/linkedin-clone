@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import WelcomeButton from "./components/WelcomeButton";
 
 /**
  * To show nav footer on main pages
@@ -12,100 +11,116 @@ interface WelcomePageProps {
 }
 
 export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openRegister, setOpenRegister] = useState(false);
-  const [LoginUsername, setLoginUsername] = useState("");
-  const [LoginPassword, setLoginPassword] = useState("");
-  const [RegisterUsername, setRegisterUsername] = useState("");
-  const [RegisterPassword, setRegisterPassword] = useState("");
-  const [RegisterEmail, setRegisterEmail] = useState("");
-  const [RegisterPhoto, setRegisterPhoto] = useState("");
-  const [loginError, setLoginError] = useState("");
-  const [registerError, setRegisterError] = useState("");
+  // const [openLogin, setOpenLogin] = useState(false);
+  // const [openRegister, setOpenRegister] = useState(false);
+  // const [LoginUsername, setLoginUsername] = useState("");
+  // const [LoginPassword, setLoginPassword] = useState("");
+  // const [RegisterUsername, setRegisterUsername] = useState("");
+  // const [RegisterPassword, setRegisterPassword] = useState("");
+  // const [RegisterEmail, setRegisterEmail] = useState("");
+  // const [RegisterPhoto, setRegisterPhoto] = useState("");
+  // const [loginError, setLoginError] = useState("");
+  // const [registerError, setRegisterError] = useState("");
   const navigate = useNavigate(); //redirect to another page
 
-  const toggleLogin = () => {
-    setOpenLogin(!openLogin);
-    setOpenRegister(false);
-  };
+  //trigger showNavFooter asap, so nav and footer dont show up in 404
+  useEffect(() => {
+    setShowNavFooter(false);
+  }, []);
+  // const toggleLogin = () => {
+  //   setOpenLogin(!openLogin);
+  //   setOpenRegister(false);
+  // };
 
-  const toggleRegister = () => {
-    setOpenRegister(!openRegister);
-    setOpenLogin(false);
-  };
+  // const toggleRegister = () => {
+  //   setOpenRegister(!openRegister);
+  //   setOpenLogin(false);
+  // };
 
-  //Need to specify the event type
-  const handleLoginUsernameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setLoginUsername(event.target.value);
-  };
+  // //Need to specify the event type
+  // const handleLoginUsernameChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setLoginUsername(event.target.value);
+  // };
 
-  const handleLoginPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setLoginPassword(event.target.value);
-  };
+  // const handleLoginPasswordChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setLoginPassword(event.target.value);
+  // };
 
-  //check if username and password are empty, else navigate to home
-  const handleLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+  // //check if username and password are empty, else navigate to home
+  // const handleLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+
+  //   if (!LoginUsername || !LoginPassword) {
+  //     setLoginError("Username and password cannot be empty.");
+  //   } else {
+  //     setLoginError("");
+  //     navigate("/home");
+  //     setShowNavFooter(true);
+  //   }
+  // };
+
+  // const handleRergisterUsernameChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRegisterUsername(event.target.value);
+  // };
+
+  // const handleRegisterPasswordChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRegisterPassword(event.target.value);
+  // };
+
+  // const handleRegisterEmailChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRegisterEmail(event.target.value);
+  // };
+
+  // const handleRegisterRegisterChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   //take file
+  //   if (event.target.files !== null)
+  //     setRegisterPhoto(URL.createObjectURL(event.target.files[0]));
+  // };
+  // //check if username and password are empty, else navigate to home
+  // const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+
+  //   if (
+  //     !RegisterUsername ||
+  //     !RegisterPassword ||
+  //     !RegisterEmail ||
+  //     !RegisterPhoto
+  //   ) {
+  //     setRegisterError("Username, password,email and photo cannot be empty.");
+  //   } else {
+  //     setRegisterError("");
+  //     navigate("/home");
+  //     setShowNavFooter(true);
+  //   }
+  // };
+
+  const navigateLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (!LoginUsername || !LoginPassword) {
-      setLoginError("Username and password cannot be empty.");
-    } else {
-      setLoginError("");
-      navigate("/home");
-      setShowNavFooter(true);
-    }
+    navigate("/login");
   };
 
-  const handleRergisterUsernameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRegisterUsername(event.target.value);
-  };
-
-  const handleRegisterPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRegisterPassword(event.target.value);
-  };
-
-  const handleRegisterEmailChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRegisterEmail(event.target.value);
-  };
-
-  const handleRegisterRegisterChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    //take file
-    if (event.target.files !== null)
-      setRegisterPhoto(URL.createObjectURL(event.target.files[0]));
-  };
-  //check if username and password are empty, else navigate to home
-  const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const navigateRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (
-      !RegisterUsername ||
-      !RegisterPassword ||
-      !RegisterEmail ||
-      !RegisterPhoto
-    ) {
-      setRegisterError("Username, password,email and photo cannot be empty.");
-    } else {
-      setRegisterError("");
-      navigate("/home");
-      setShowNavFooter(true);
-    }
+    navigate("/register");
   };
 
   return (
     <div>
-      <h4 className="flex flex-row justify-center pt-24  text-2xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-4xl">
+      <h4 className="flex flex-row justify-center pt-24 text-2xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-4xl">
         Welcome to
       </h4>
       <h1 className="flex flex-row justify-center pt-5 mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
@@ -113,41 +128,52 @@ export default function WelcomePage({ setShowNavFooter }: WelcomePageProps) {
           Linked In
         </span>
       </h1>
+      <p className="flex flex-row justify-center text-lg font-normal lg:text-xl dark:text-gray-300">
+        Welcome to your professional community
+      </p>
 
       <div className="flex justify-center mt-20">
-        <div className="grid grid-cols-1 md:grid-cols-5">
-          <div className="col-start-1 col-end-3 md:col-start-1 md:col-end-3 w-55 md:w-64">
-            <WelcomeButton
-              text={"Already have an account"}
-              toggleMenu={toggleLogin}
-              menu={openLogin}
-              username={LoginUsername}
-              handleUsernameChange={handleLoginUsernameChange}
-              password={LoginPassword}
-              handlePasswordChange={handleLoginPasswordChange}
-              error={loginError}
-              handleFunctionality={handleLogin}
-              buttonText="Login"
-            />
-          </div>
-          <div className="col-end-7 col-span-2 md:col-end-7 md:col-span-2 w-55 md:w-64">
-            <WelcomeButton
-              text={"Else make a new one"}
-              toggleMenu={toggleRegister}
-              menu={openRegister}
-              username={RegisterUsername}
-              handleUsernameChange={handleRergisterUsernameChange}
-              password={RegisterPassword}
-              handlePasswordChange={handleRegisterPasswordChange}
-              isRegister={true}
-              email={RegisterEmail}
-              handleEmailChange={handleRegisterEmailChange}
-              error={registerError}
-              handleFunctionality={handleRegister}
-              photo={RegisterPhoto}
-              handlePhotoChange={handleRegisterRegisterChange}
-              buttonText="Register"
-            />
+        <div className="flex justify-center mt-20">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {/* First Section */}
+            <div className="flex flex-col justify-between items-center h-full max-w-xs">
+              <div>
+                <p className="text-xl font-normal text-gray-100 text-center">
+                  Discover the best software tools
+                </p>
+                <p className="text-md font-normal text-gray-100 text-center dark:text-gray-400">
+                  Connect with buyers who have first-hand experience to find the
+                  best products for you.
+                </p>
+              </div>
+              <button
+                onClick={navigateLogin}
+                className="mt-4 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+              >
+                Login
+              </button>
+            </div>
+
+            {/* Second Section */}
+            <div className="flex flex-col justify-between items-center h-full max-w-xs">
+              <div>
+                <p className="text-xl font-normal text-gray-100 text-center">
+                  Let the appropriate people know that you are available for
+                  work
+                </p>
+                <p className="text-md font-normal text-gray-100 text-center dark:text-gray-400">
+                  With Job Availability, you can let recruiters know privately
+                  or share publicly with the LinkedIn community that youre
+                  looking for new job opportunities.
+                </p>
+              </div>
+              <button
+                onClick={navigateRegister}
+                className="mt-4 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+              >
+                Register
+              </button>
+            </div>
           </div>
         </div>
       </div>

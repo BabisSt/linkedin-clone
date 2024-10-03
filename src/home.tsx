@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./components/Post";
+import NewPost from "./components/NewPost";
 
 /**
  *
@@ -38,9 +39,9 @@ const postData = [
 export default function Home() {
   return (
     <div>
-      <h1>Home</h1>
+      <NewPost />
       {postData.map((data) => (
-        <div key={data.id} className="my-4">
+        <div key={data.id}>
           <Post
             id={data.id}
             name={data.name}

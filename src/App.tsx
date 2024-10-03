@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import WelcomePage from "./welcomePage";
+import Login from "./login";
+import Register from "./register";
 import Home from "./home";
 import NavBar from "./components/NavBar";
 import PrivateRoute from "./components/PrivateRoute";
@@ -31,6 +33,14 @@ export default function App() {
             <Route
               path="/"
               element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
+            />
+            <Route
+              path="/login"
+              element={<Login setShowNavFooter={setShowNavFooter} />}
+            />
+            <Route
+              path="/register"
+              element={<Register setShowNavFooter={setShowNavFooter} />}
             />
             <Route
               path="/404"

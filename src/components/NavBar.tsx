@@ -16,6 +16,30 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
     navigate("/home");
   };
 
+  const routeNetwork = () => {
+    navigate("/network");
+  };
+
+  const routeAds = () => {
+    navigate("/ads");
+  };
+
+  const routeContact = () => {
+    navigate("/contact");
+  };
+
+  const routeProfile = () => {
+    navigate("/profile");
+  };
+
+  const routeSettings = () => {
+    navigate("/settings");
+  };
+
+  const routeNotifications = () => {
+    navigate("/notifications");
+  };
+
   const Logout = () => {
     setShowNavFooter(false);
     navigate("/");
@@ -93,15 +117,15 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
-                    onClick={Logout}
+                    onClick={routeProfile}
                     className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:text-white"
                   >
-                    Dashboard
+                    Profile
                   </button>
                 </li>
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
-                    onClick={Logout}
+                    onClick={routeSettings}
                     className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
                   >
                     Settings
@@ -109,10 +133,10 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
                 </li>
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
-                    onClick={Logout}
+                    onClick={routeNotifications}
                     className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
                   >
-                    Earnings
+                    Notifications
                   </button>
                 </li>
                 <li className="rounded mx-1 hover:bg-cyan-950">
@@ -132,40 +156,26 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 ">
               <li className="">
-                <button
-                  onClick={() => navigate("/home")}
-                  className={getButtonClass("/home")}
-                >
+                <button onClick={routeHome} className={getButtonClass("/home")}>
                   Home
                 </button>
               </li>
               <li className="">
                 <button
-                  onClick={() => navigate("/about")}
-                  className={getButtonClass("/about")}
+                  onClick={routeNetwork}
+                  className={getButtonClass("/network")}
                 >
-                  About
+                  Network
+                </button>
+              </li>
+              <li className="">
+                <button onClick={routeAds} className={getButtonClass("/ads")}>
+                  Ads
                 </button>
               </li>
               <li className="">
                 <button
-                  onClick={() => navigate("/services")}
-                  className={getButtonClass("/services")}
-                >
-                  Services
-                </button>
-              </li>
-              <li className="">
-                <button
-                  onClick={() => navigate("/pricing")}
-                  className={getButtonClass("/pricing")}
-                >
-                  Pricing
-                </button>
-              </li>
-              <li className="">
-                <button
-                  onClick={() => navigate("/contact")}
+                  onClick={routeContact}
                   className={getButtonClass("/contact")}
                 >
                   Contact

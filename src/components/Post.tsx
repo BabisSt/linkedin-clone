@@ -41,7 +41,7 @@ export default function Post({
 
   return (
     <div className="flex">
-      <div className="flex shadow-lg rounded-lg mx-4 md:mx-auto max-w-lg md:max-w-4xl bg-blue-200 w-full">
+      <div className="flex shadow-lg rounded-lg mx-4 md:mx-auto max-w-lg md:max-w-4xl bg-blue-200 w-full mb-4">
         <div className="flex flex-col items-start px-4 py-6 w-full">
           <div className="flex items-center justify-between w-full">
             <img
@@ -68,15 +68,19 @@ export default function Post({
           <Dialog
             open={openDial}
             handler={handlePhotoClick}
-            className="flex items-center justify-center backdrop-blur-md fixed inset-0 z-50"
+            className="flex items-center justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent"
             onClick={handleClose}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            <div className="fixed inset-0 opacity-50" onClick={handleClose} />
+            <div
+              className="fixed inset-0 bg-black opacity-50 backdrop-blur-md"
+              onClick={handleClose}
+            />
+
             <DialogBody
-              className="flex items-center justify-center p-0"
+              className="flex items-center justify-center p-0 bg-transparent"
               onClick={(e) => e.stopPropagation()}
               placeholder={undefined}
               onPointerEnterCapture={undefined}
@@ -89,6 +93,7 @@ export default function Post({
               />
             </DialogBody>
           </Dialog>
+
           <p className="mt-3 text-gray-700 text-sm break-words max-w-full">
             {content}
           </p>
@@ -98,10 +103,10 @@ export default function Post({
               onClick={handleLiked}
             >
               <svg
-                fill={liked ? "red" : "none"}
+                fill={liked ? "#91ffff" : "none"}
                 viewBox="0 0 24 24"
                 className="w-8 h-8 mr-1"
-                stroke={liked ? "red" : "currentColor"}
+                stroke={liked ? "#08a4a7" : "currentColor"}
               >
                 <path
                   strokeLinecap="round"
