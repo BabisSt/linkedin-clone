@@ -27,7 +27,9 @@ export default function Post() {
       setPostPhoto(URL.createObjectURL(event.target.files[0]));
   };
 
-  const handlePost = () => {};
+  const handlePost = () => {
+    console.log(postText + " " + postTitle);
+  };
 
   return (
     <div className="flex py-8">
@@ -108,7 +110,7 @@ export default function Post() {
 
               <div className="icons flex text-gray-500 m-2">
                 <label
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white cursor-pointer"
+                  className="block mb-2 text-sm font-medium text-white cursor-pointer"
                   htmlFor="file_input"
                 >
                   <svg

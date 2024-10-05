@@ -96,14 +96,14 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
 
         <div className="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
               Make a new account
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Your email
                 </label>
@@ -120,7 +120,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   First name
                 </label>
@@ -137,7 +137,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Last Name
                 </label>
@@ -154,7 +154,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Password
                 </label>
@@ -171,7 +171,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Confirm Password
                 </label>
@@ -188,7 +188,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <div>
                 <label
                   htmlFor="phone-input"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Phone number
                 </label>
@@ -210,15 +210,15 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
               <button
                 onClick={handleRegister}
                 type="submit"
-                className="mt-4 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+                className="mt-4 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none  focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
               >
                 Register
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-400">
                 Already have an account?{" "}
                 <button
                   onClick={navigateLogin}
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium  hover:underline text-primary-500"
                 >
                   Login
                 </button>

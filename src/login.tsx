@@ -5,6 +5,10 @@ interface LoginProps {
   setShowNavFooter: (value: boolean) => void;
 }
 
+/**
+ *
+ * TODO: add backend Logic
+ */
 export default function Login({ setShowNavFooter }: LoginProps) {
   const navigate = useNavigate();
 
@@ -60,14 +64,14 @@ export default function Login({ setShowNavFooter }: LoginProps) {
 
         <div className="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
               Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Your email
                 </label>
@@ -84,7 +88,7 @@ export default function Login({ setShowNavFooter }: LoginProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white"
                 >
                   Password
                 </label>
@@ -105,22 +109,19 @@ export default function Login({ setShowNavFooter }: LoginProps) {
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      className="w-4 h-4 border rounded bg-gray-700 border-gray-600 focus:ring-primary-600 ring-offset-gray-800"
                       required
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="remember"
-                      className="text-gray-500 dark:text-gray-300"
-                    >
+                    <label htmlFor="remember" className="text-gray-300">
                       Remember me
                     </label>
                   </div>
                 </div>
                 <a
                   href="#"
-                  className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="text-sm font-medium hover:underline text-primary-500"
                 >
                   Forgot password?
                 </a>
@@ -129,15 +130,15 @@ export default function Login({ setShowNavFooter }: LoginProps) {
               <button
                 onClick={handleLogin}
                 type="submit"
-                className="mt-4  text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+                className="mt-4  text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none  focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
               >
                 Log in
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-400">
                 Don’t have an account yet?{" "}
                 <button
                   onClick={navigateRegister}
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium hover:underline text-primary-500"
                 >
                   Register
                 </button>

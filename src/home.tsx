@@ -5,38 +5,25 @@ import NewPost from "./components/NewPost";
 /**
  *
  * TODO : grab post from backend-api and map them
+ * To accept props as Object type I have to deconstruct the types of the object
+ * and then accept this interface as array
  */
 
-//Dummy data , will work for now
-const postData = [
-  {
-    id: "1",
-    name: "Brad Adams",
-    avatar:
-      "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-    postTime: "22h ago",
-    content:
-      " Lorem ipsum, dolor sit amet conse. Saepe optio minus rem dolor sitggggggggggggggggggggggggggggggggggggggggggggggggggggg amet!",
-    likes: "8",
-    comments: "122",
-    photo:
-      "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    id: "2",
-    name: "ok",
-    avatar:
-      "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-    postTime: "4h ago",
-    content: "gdsgds",
-    likes: "78",
-    comments: "2",
-    photo:
-      "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-  },
-];
+interface postDataProps {
+  id: string;
+  name: string;
+  avatar: string;
+  postTime: string;
+  content: string;
+  likes: string;
+  comments: string;
+  photo?: string;
+}
 
-export default function Home() {
+interface homeProps {
+  postData: postDataProps[];
+}
+export default function Home({ postData }: homeProps) {
   return (
     <div>
       <NewPost />

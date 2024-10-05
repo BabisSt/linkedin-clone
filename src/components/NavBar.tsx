@@ -3,12 +3,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/LinkedIn_logo_.png";
 import userImage from "/user.png";
 
+/**
+ * TODO: Add email to the data
+ */
 interface NavBarProps {
   setShowNavFooter: (value: boolean) => void;
-  userPhoto?: string;
+  photo?: string;
+  name: string;
 }
 
-export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
+export default function NavBar({ setShowNavFooter, name, photo }: NavBarProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,8 +24,8 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
     navigate("/network");
   };
 
-  const routeAds = () => {
-    navigate("/ads");
+  const routeJobs = () => {
+    navigate("/jobs");
   };
 
   const routeContact = () => {
@@ -74,7 +78,7 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
 
   return (
     <div>
-      <nav className="bg-sky-800 fixed rounded-lg shadow w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+      <nav className="bg-sky-800 fixed rounded-lg shadow w-full z-20 top-0 start-0 border-b border-gray-200 border-gray-600">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <button
             className="flex flex-wrap items-center justify-between"
@@ -88,14 +92,14 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
             <button
               type="button"
-              className="flex text-sm bg-blue-200 rounded-full md:me-0 ring-4 focus:ring-4 focus:ring-cyan-950 dark:focus:ring-cyan-950"
+              className="flex text-sm bg-blue-200 rounded-full md:me-0 ring-2 focus:ring-4 focus:ring-cyan-950 focus:ring-cyan-950"
               id="user-menu-button"
               aria-expanded={isUserMenuOpen}
               onClick={toggleUserMenu}
             >
               <img
                 className="w-8 h-8 rounded-full"
-                src={userPhoto ? userPhoto : userImage}
+                src={photo ? photo : userImage}
               />
             </button>
 
@@ -103,14 +107,14 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
               ref={userMenuRef}
               className={`absolute left-0 top-full mt-2 z-50 ${
                 isUserMenuOpen ? "block" : "hidden"
-              } text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-sky-700 dark:divide-gray-600 w-auto`}
+              } text-base list-none  divide-y  rounded-lg shadow bg-sky-700 divide-gray-600 w-auto`}
               id="user-dropdown"
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">
-                  Bonnie Green
+                <span className="block text-sm text-gray-900 text-white">
+                  {name}
                 </span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                <span className="block text-sm  truncate text-gray-400">
                   name@flowbite.com
                 </span>
               </div>
@@ -118,15 +122,31 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
                     onClick={routeProfile}
-                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:text-white"
+                    className=" px-4 py-2 text-sm  text-gray-200 hover:text-white"
                   >
                     Profile
                   </button>
                 </li>
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
+                    onClick={routeJobs}
+                    className=" px-4 py-2 text-sm  text-gray-200 hover:text-white"
+                  >
+                    Jobs
+                  </button>
+                </li>
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
+                    onClick={routeNetwork}
+                    className=" px-4 py-2 text-sm  text-gray-200 hover:text-white"
+                  >
+                    Network
+                  </button>
+                </li>
+                <li className="rounded mx-1 hover:bg-cyan-950">
+                  <button
                     onClick={routeSettings}
-                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                    className=" px-4 py-2 text-sm text-gray-200 hover:text-white"
                   >
                     Settings
                   </button>
@@ -134,7 +154,7 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
                     onClick={routeNotifications}
-                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                    className=" px-4 py-2 text-sm text-gray-200 hover:text-white"
                   >
                     Notifications
                   </button>
@@ -142,7 +162,7 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
                 <li className="rounded mx-1 hover:bg-cyan-950">
                   <button
                     onClick={Logout}
-                    className=" px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:text-white"
+                    className=" px-4 py-2 text-sm text-gray-200 hover:text-white"
                   >
                     Sign out
                   </button>
@@ -169,8 +189,8 @@ export default function NavBar({ setShowNavFooter, userPhoto }: NavBarProps) {
                 </button>
               </li>
               <li className="">
-                <button onClick={routeAds} className={getButtonClass("/ads")}>
-                  Ads
+                <button onClick={routeJobs} className={getButtonClass("/jobs")}>
+                  Jobs
                 </button>
               </li>
               <li className="">
