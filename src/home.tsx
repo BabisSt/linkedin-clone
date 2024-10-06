@@ -1,6 +1,7 @@
 import React from "react";
 import Post from "./components/Post";
 import NewPost from "./components/NewPost";
+import { useProfileContext } from "./context";
 
 /**
  *
@@ -9,30 +10,17 @@ import NewPost from "./components/NewPost";
  * and then accept this interface as array
  */
 
-interface postDataProps {
-  id: string;
-  name: string;
-  avatar: string;
-  postTime: string;
-  content: string;
-  likes: string;
-  comments: string;
-  photo?: string;
-}
-
-interface homeProps {
-  postData: postDataProps[];
-}
-export default function Home({ postData }: homeProps) {
+export default function Home() {
+  const posts = useProfileContext();
   return (
     <div>
       <NewPost />
-      {postData.map((data) => (
+      {posts.userProps[0].postData.map((data) => (
         <div key={data.id}>
           <Post
             id={data.id}
-            name={data.name}
-            avatar={data.avatar}
+            name={data.postedBy}
+            avatar={data.postedByAvatar}
             postTime={data.postTime}
             content={data.content}
             likes={data.likes}

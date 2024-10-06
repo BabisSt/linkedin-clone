@@ -2,19 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/LinkedIn_logo_.png";
 import userImage from "/user.png";
+import { useProfileContext } from "../context";
 
 /**
  * TODO: Add email to the data
  */
 interface NavBarProps {
   setShowNavFooter: (value: boolean) => void;
-  photo?: string;
-  name: string;
 }
 
-export default function NavBar({ setShowNavFooter, name, photo }: NavBarProps) {
+export default function NavBar({ setShowNavFooter }: NavBarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const profileData = useProfileContext();
+  const avatar = profileData.userProps[0].avatar;
 
   const routeHome = () => {
     navigate("/home");
@@ -99,7 +100,7 @@ export default function NavBar({ setShowNavFooter, name, photo }: NavBarProps) {
             >
               <img
                 className="w-8 h-8 rounded-full"
-                src={photo ? photo : userImage}
+                src={avatar ? avatar : userImage}
               />
             </button>
 
@@ -112,10 +113,10 @@ export default function NavBar({ setShowNavFooter, name, photo }: NavBarProps) {
             >
               <div className="px-4 py-3">
                 <span className="block text-sm text-gray-900 text-white">
-                  {name}
+                  {profileData.userProps[0].name}
                 </span>
                 <span className="block text-sm  truncate text-gray-400">
-                  name@flowbite.com
+                  {profileData.userProps[0].email}
                 </span>
               </div>
               <ul className="py-2" aria-labelledby="user-menu-button">

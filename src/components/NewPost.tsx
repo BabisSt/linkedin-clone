@@ -142,7 +142,7 @@ export default function Post() {
             <div className="absolute bottom-0 left-0 w-full flex justify-end p-7 ">
               <button
                 onClick={handleCloseThoughts}
-                className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-gray-500"
+                className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-blue-200"
               >
                 Close
               </button>
