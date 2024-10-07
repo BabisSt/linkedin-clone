@@ -19,14 +19,14 @@ const GenericDialog = ({
     <Dialog
       open={open}
       handler={onClose}
-      className="flex justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent w-full pt-10 "
+      className="flex justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent w-screen h-screen h-full w-full pt-10 "
       onClick={onClose}
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
     >
       <div
-        className="fixed inset-0 bg-black opacity-50 backdrop-blur-md w-full"
+        className="fixed inset-0 h-full opacity-50 backdrop-blur-lg w-screen h-screen h-full w-full"
         onClick={onClose}
       />
       <DialogBody
@@ -38,10 +38,10 @@ const GenericDialog = ({
       >
         <h2 className="text-xl font-bold text-blue-200 mb-4">{title}</h2>
         {children}
-        <div className="absolute bottom-0 left-0 w-full flex justify-end p-7">
+        <div className="absolute bottom-0 left-0  flex justify-end p-7">
           <button
             onClick={onClose}
-            className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-gray-500"
+            className="btn border rounded-lg border-blue-300 bg-blue-300 hover:bg-transparent p-1 px-4 font-semibold cursor-pointer text-gray-500 hover:text-black"
           >
             Close
           </button>

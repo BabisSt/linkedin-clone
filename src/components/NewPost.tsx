@@ -54,7 +54,7 @@ export default function Post() {
           onPointerLeaveCapture={undefined}
         >
           <div
-            className="fixed inset-0 bg-black opacity-50 backdrop-blur-md w-full"
+            className="fixed inset-0  opacity-50 backdrop-blur-md w-full"
             onClick={handleCloseThoughts}
           />
 

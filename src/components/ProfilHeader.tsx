@@ -111,7 +111,7 @@ export default function ProfileHeader() {
             onPointerLeaveCapture={undefined}
           >
             <div
-              className="fixed inset-0 bg-black opacity-50 backdrop-blur-md w-full"
+              className="fixed inset-0 opacity-50 backdrop-blur-md w-full"
               onClick={handleAvatarClose}
             />
             <DialogBody
@@ -163,7 +163,7 @@ export default function ProfileHeader() {
               <div className="absolute bottom-0 left-0 w-full flex justify-end p-7 ">
                 <button
                   onClick={handleAvatarClose}
-                  className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-blue-200"
+                  className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-gray-500"
                 >
                   Close
                 </button>
@@ -188,7 +188,7 @@ export default function ProfileHeader() {
             onPointerLeaveCapture={undefined}
           >
             <div
-              className="fixed inset-0 bg-black opacity-50 backdrop-blur-md w-full"
+              className="fixed inset-0 opacity-50 backdrop-blur-md w-full"
               onClick={handleBGClose}
             />
             <DialogBody

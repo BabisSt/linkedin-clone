@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, MouseEvent } from "react";
 import { useProfileContext } from "../context";
 import GenericDialog from "./GenericDialog";
 
@@ -12,7 +12,7 @@ export default function About() {
   const [about, setAbout] = useState("");
   const [skills, setSkills] = useState(profileData.userProps[0].topSkills);
   const [savedMessage, setSavedMessage] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const toggleTopSkillsDialog = () => {
     setSavedMessage("");
     setOpenTopSkillsDialog(!openTopSkillsDialog);
@@ -29,23 +29,48 @@ export default function About() {
   };
 
   const handleSaveSkills = () => {
-    if (skills !== profileData.userProps[0].topSkills) {
+    let foundEmpty = false;
+    for (let i = 0; i <= skills.length; i++) {
+      if (skills[i] === "") {
+        setErrorMessage("Skills can't be empty!");
+        foundEmpty = true;
+        break;
+      }
+    }
+    if (skills !== profileData.userProps[0].topSkills && !foundEmpty) {
       profileData.userProps[0].topSkills = skills;
       setSavedMessage("Successfully Saved!");
+      foundEmpty = false;
+      setErrorMessage("");
     }
   };
 
   // Handler for updating individual skills
   const handleSkillChange = (index: number, value: string) => {
     const updatedSkills = [...skills];
-    updatedSkills[index] = value; // Update the specific skill
-    setSkills(updatedSkills); // Update the state
+    updatedSkills[index] = value;
+    setSkills(updatedSkills);
   };
 
   useEffect(() => {
     setAbout(profileData.userProps[0].aboutContent);
     setSkills(profileData.userProps[0].topSkills);
   }, [profileData]);
+
+  const addSkill = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setSavedMessage("");
+
+    const updatedSkills = [...skills];
+    updatedSkills[skills.length++] = "";
+    setSkills(updatedSkills);
+  };
+
+  const handleDeleteSkill = (index: number) => {
+    const updatedSkills = [...skills];
+    updatedSkills.splice(index, 1);
+    setSkills(updatedSkills);
+  };
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -90,7 +115,7 @@ export default function About() {
               className="w-full h-56 border border-gray-300 rounded p-2"
               onChange={(e) => setAbout(e.target.value)}
             />
-            <p className="text-blue-200 font-semibold">{savedMessage}</p>
+            <p className="text-blue-400 font-bold pt-2">{savedMessage}</p>
           </div>
         </GenericDialog>
 
@@ -101,18 +126,50 @@ export default function About() {
           onSave={handleSaveSkills}
         >
           <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
-            <ul className="list-disc px-5">
+            <ul className="list-disc px-5 mb-4">
               {skills.map((skill, index) => (
-                <li key={index}>
+                <li
+                  key={index}
+                  className="flex items-center justify-between mb-2"
+                >
                   <input
                     type="text"
-                    value={skill} // Use value instead of defaultValue
-                    className="w-full border border-gray-300 rounded p-2 mb-2"
-                    onChange={(e) => handleSkillChange(index, e.target.value)} // Call handler on change
+                    value={skill}
+                    className="flex-grow border border-gray-300 rounded p-2 mr-2"
+                    onChange={(e) => handleSkillChange(index, e.target.value)}
                   />
+                  <button
+                    className="p-1"
+                    onClick={() => handleDeleteSkill(index)}
+                  >
+                    <svg
+                      className=" cursor-pointer hover:text-gray-700 border rounded-full  h-7"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
                 </li>
               ))}
-              <p className="text-blue-200 font-semibold">{savedMessage}</p>
+              <div className="flex justify-end">
+                <button
+                  className="btn border rounded-lg border-blue-300 bg-blue-300 hover:bg-transparent p-1 px-4 font-semibold cursor-pointer text-gray-500 hover:text-black"
+                  onClick={addSkill}
+                >
+                  Add Skill
+                </button>
+              </div>
+
+              <p className="text-blue-400 font-bold pt-2">{savedMessage}</p>
+              <p className="text-red-400 font-bold pt-2">{errorMessage}</p>
             </ul>
           </div>
         </GenericDialog>
