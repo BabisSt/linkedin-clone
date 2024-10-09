@@ -2,9 +2,6 @@ import React, { useEffect, useState, MouseEvent } from "react";
 import { useProfileContext } from "../context";
 import GenericDialog from "./GenericDialog";
 
-/**
- * TODO : add functionality to add more skills
- */
 export default function About() {
   const profileData = useProfileContext();
   const [openTopSkillsDialog, setOpenTopSkillsDialog] = useState(false);
@@ -82,7 +79,7 @@ export default function About() {
           </p>
           <button
             onClick={toggleAboutDialog}
-            className="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded"
+            className="absolute top-4 right-4 bg-sky-800 text-white px-3 py-1 rounded"
           >
             Edit
           </button>
@@ -91,7 +88,7 @@ export default function About() {
         <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300">
           <button
             onClick={toggleTopSkillsDialog}
-            className="float-right top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded"
+            className="float-right top-4 right-4 bg-sky-800 text-white px-3 py-1 rounded"
           >
             Edit
           </button>

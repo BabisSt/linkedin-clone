@@ -134,11 +134,10 @@ export default function ProfileHeader() {
                     htmlFor="file_input"
                   >
                     <svg
-                      className="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7"
+                      className="mr-2 cursor-pointer hover:text-gray-700 border border-sky-800 rounded-full p-1 h-7 hover:bg-sky-800 hover:border-blue-200 stroke-sky-800 hover:stroke-blue-200"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
                     >
                       <path
                         strokeLinecap="round"
@@ -163,7 +162,7 @@ export default function ProfileHeader() {
               <div className="absolute bottom-0 left-0 w-full flex justify-end p-7 ">
                 <button
                   onClick={handleAvatarClose}
-                  className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-gray-500"
+                  className="btn border rounded-lg border-blue-300 bg-blue-300 hover:bg-transparent p-1 px-4 font-semibold cursor-pointer text-gray-500 hover:text-black"
                 >
                   Close
                 </button>
@@ -211,11 +210,10 @@ export default function ProfileHeader() {
                     htmlFor="bg_file_input"
                   >
                     <svg
-                      className="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7"
+                      className="mr-2 cursor-pointer hover:text-gray-700 border border-sky-800 rounded-full p-1 h-7 hover:bg-sky-800 hover:border-blue-200 stroke-sky-800 hover:stroke-blue-200"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
                     >
                       <path
                         strokeLinecap="round"
@@ -239,7 +237,7 @@ export default function ProfileHeader() {
               <div className="absolute bottom-0 left-0 w-full flex justify-end p-7 ">
                 <button
                   onClick={handleBGClose}
-                  className="btn border rounded-lg border-blue-200 p-1 px-4 font-semibold cursor-pointer text-gray-500"
+                  className="btn border rounded-lg border-blue-300 bg-blue-300 hover:bg-transparent p-1 px-4 font-semibold cursor-pointer text-gray-500 hover:text-black"
                 >
                   Close
                 </button>

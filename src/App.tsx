@@ -24,6 +24,16 @@ interface PostProps {
   photo: string;
 }
 
+export interface Experience {
+  id: string;
+  title: string;
+  level: string;
+  companyName: string;
+  companyLogo: string;
+  duration: string;
+  location: string;
+}
+
 export interface UserProps {
   name: string;
   email: string;
@@ -32,6 +42,7 @@ export interface UserProps {
   aboutContent: string;
   postData: PostProps[];
   topSkills: string[];
+  experience: Experience[];
 }
 
 export interface AppData {
@@ -85,6 +96,28 @@ export default function App() {
           "I am a Software Engineer with over 2 years of professional experience...",
         postData: postData,
         topSkills: ["Java", "Html", "React"],
+        experience: [
+          {
+            id: "1",
+            title: "Software Engineer",
+            companyName: "Netcompany-Intrasoft",
+            companyLogo:
+              "https://media.licdn.com/dms/image/v2/D4D0BAQFDO68DiMos_Q/company-logo_100_100/company-logo_100_100/0/1706136980091/netcompany_intrasoft_sa_logo?e=1736380800&v=beta&t=wHeprUKkFdYuLWlcKfoR5Ww_oc4QTn5z2tEdlQ3bbbs",
+            duration: "Jan 2023 - Present",
+            level: "Full-Time",
+            location: "Athens, Attiki",
+          },
+          {
+            id: "2",
+            title: "Web Developer - Game Developer",
+            companyName: "Conferience.com",
+            companyLogo:
+              "https://media.licdn.com/dms/image/v2/C4E0BAQEOjfno00gnNg/company-logo_100_100/company-logo_100_100/0/1631302071499?e=1736380800&v=beta&t=yUDEebc0-je11FtVRpcDHNtEAsgj0Gnl9cs0fmjrKMk",
+            duration: "Mar 2022 - Jul 2022",
+            level: "Internship",
+            location: "Athens, Attiki",
+          },
+        ],
       },
     ],
   });
