@@ -1,6 +1,7 @@
 import React, { useEffect, useState, MouseEvent } from "react";
 import { useProfileContext } from "../context";
 import GenericDialog from "./GenericDialog";
+import EditButton from "./EditButton";
 
 export default function About() {
   const profileData = useProfileContext();
@@ -72,26 +73,16 @@ export default function About() {
   return (
     <div className="flex justify-center items-center w-full">
       <div className="relative flex flex-col shadow-lg rounded-lg mx-4 max-w-lg md:max-w-4xl w-full mb-4 bg-blue-200">
-        <div>
+        <div className="group">
           <h2 className="text-2xl font-bold text-gray-900 p-4">About</h2>
           <p className="text-sm text-gray-600 text-center text-justify px-5 py-3">
             {profileData.userProps[0].aboutContent}
           </p>
-          <button
-            onClick={toggleAboutDialog}
-            className="absolute top-4 right-4 bg-sky-800 text-white px-3 py-1 rounded"
-          >
-            Edit
-          </button>
+          <EditButton functionality={toggleAboutDialog} />
         </div>
 
-        <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300">
-          <button
-            onClick={toggleTopSkillsDialog}
-            className="float-right top-4 right-4 bg-sky-800 text-white px-3 py-1 rounded"
-          >
-            Edit
-          </button>
+        <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300 group">
+          <EditButton functionality={toggleTopSkillsDialog} />
           <h2 className="text-xl font-bold text-gray-900">Top Skills</h2>
           {profileData.userProps[0].topSkills.map((data) => (
             <ul className="list-disc" key={data}>
