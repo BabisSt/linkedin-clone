@@ -100,7 +100,7 @@ export default function About() {
           <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
             <textarea
               defaultValue={profileData.userProps[0].aboutContent}
-              className="w-full h-56 border border-gray-300 rounded p-2"
+              className="bg-blue-200 w-full h-56 border border-sky-800 rounded p-2"
               onChange={(e) => setAbout(e.target.value)}
             />
             <p className="text-blue-400 font-bold pt-2">{savedMessage}</p>
@@ -123,7 +123,7 @@ export default function About() {
                   <input
                     type="text"
                     value={skill}
-                    className="flex-grow border border-gray-300 rounded p-2 mr-2"
+                    className="flex-grow border border-sky-800 rounded p-2 mr-2 bg-blue-200"
                     onChange={(e) => handleSkillChange(index, e.target.value)}
                   />
                   <button
