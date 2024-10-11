@@ -103,7 +103,8 @@ export default function App() {
             companyName: "Netcompany-Intrasoft",
             companyLogo:
               "https://media.licdn.com/dms/image/v2/D4D0BAQFDO68DiMos_Q/company-logo_100_100/company-logo_100_100/0/1706136980091/netcompany_intrasoft_sa_logo?e=1736380800&v=beta&t=wHeprUKkFdYuLWlcKfoR5Ww_oc4QTn5z2tEdlQ3bbbs",
-            duration: "Jan 2023 - Present",
+            duration: "01/10/2023 - Present",
+
             level: "Full-Time",
             location: "Athens, Attiki",
           },
@@ -113,7 +114,7 @@ export default function App() {
             companyName: "Conferience.com",
             companyLogo:
               "https://media.licdn.com/dms/image/v2/C4E0BAQEOjfno00gnNg/company-logo_100_100/company-logo_100_100/0/1631302071499?e=1736380800&v=beta&t=yUDEebc0-je11FtVRpcDHNtEAsgj0Gnl9cs0fmjrKMk",
-            duration: "Mar 2022 - Jul 2022",
+            duration: "03/10/2022 - 07/10/2022",
             level: "Internship",
             location: "Athens, Attiki",
           },

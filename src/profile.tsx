@@ -1,7 +1,7 @@
 import React from "react";
 import About from "./components/About";
 import ProfileHeader from "./components/ProfilHeader";
-import Experience from "./components/Experience";
+import ExperiencePage from "./components/ExperiencePage";
 
 /**
  * TODO: Add title to the data
@@ -13,7 +13,7 @@ export default function Profile() {
       <ProfileHeader />
       {/* About */}
       <About />
-      <Experience />
+      <ExperiencePage />
     </div>
   );
 }

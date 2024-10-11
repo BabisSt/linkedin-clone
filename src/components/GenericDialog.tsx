@@ -30,7 +30,7 @@ const GenericDialog = ({
         onClick={onClose}
       />
       <DialogBody
-        className="relative md:w-[60%] h-[80%] w-[100%] flex flex-col" // Increased width and height here
+        className="relative md:w-[60%] h-[80%] w-[100%] flex flex-col"
         onClick={(e) => e.stopPropagation()}
         placeholder={undefined}
         onPointerEnterCapture={undefined}
