@@ -8,13 +8,14 @@ interface GenericDialogProps {
   children: ReactNode;
   onSave: MouseEventHandler<HTMLDivElement | HTMLButtonElement>;
 }
-const GenericDialog = ({
+
+export default function GenericDialog({
   open,
   onClose,
   title,
   children,
   onSave,
-}: GenericDialogProps) => {
+}: GenericDialogProps) {
   return (
     <Dialog
       open={open}
@@ -22,8 +23,6 @@ const GenericDialog = ({
       className="flex justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent w-screen h-screen"
       onClick={onClose}
       placeholder={undefined}
-      onPointerEnterCapture={undefined}
-      onPointerLeaveCapture={undefined}
     >
       <div
         className="fixed inset-0 opacity-50 backdrop-blur-lg w-screen h-screen"
@@ -33,8 +32,6 @@ const GenericDialog = ({
         className="relative md:w-[60%] h-[80%] w-[100%] flex flex-col"
         onClick={(e) => e.stopPropagation()}
         placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
       >
         <h2 className="text-xl font-bold text-blue-200 mb-4">{title}</h2>
         {children}
@@ -55,6 +52,4 @@ const GenericDialog = ({
       </DialogBody>
     </Dialog>
   );
-};
-
-export default GenericDialog;
+}

@@ -23,6 +23,7 @@ export default function ExperiencePage() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [isNewExperience, setIsNewExperience] = useState(false);
+
   const toggleExperienceDialog = (index: number) => {
     setSavedMessage("");
     const selectedExperience = allExperience[index] || null;
@@ -35,9 +36,15 @@ export default function ExperiencePage() {
   const toggleAddExperience = () => {
     setSavedMessage("");
     setIsNewExperience(true);
-    console.log(allExperience.length);
+
+    let lastIndex;
+    if (allExperience.length != 0) {
+      const length = allExperience.length - 1;
+      lastIndex = parseInt(allExperience[length].id) + 1;
+    } else lastIndex = 0;
+
     const emptyExperience: Experience = {
-      id: (allExperience.length + 1).toString(),
+      id: lastIndex.toString(),
       title: "",
       level: "",
       companyName: "",
@@ -45,7 +52,6 @@ export default function ExperiencePage() {
       duration: "",
       location: "",
     };
-
     setExperience(emptyExperience);
     setOpenExperienceDialog(true);
   };
@@ -60,10 +66,9 @@ export default function ExperiencePage() {
   };
 
   const handleDeleteExperience = (index: string) => {
-    console.log(index);
-    const updatedExperiences = allExperience;
-    updatedExperiences.splice(parseInt(index) - 1, 1);
-    setAllExperience(updatedExperiences);
+    setAllExperience((allExperience) => {
+      return allExperience.filter((experience) => experience.id !== index);
+    });
     setOpenExperienceDialog(false);
   };
 
@@ -113,6 +118,7 @@ export default function ExperiencePage() {
 
       setOpenExperienceDialog(false);
     }
+    // console.log(allExperience);
   };
 
   useEffect(() => {
@@ -122,8 +128,8 @@ export default function ExperiencePage() {
   return (
     <div className="flex justify-center items-center w-full">
       <div className="relative flex flex-col shadow-lg rounded-lg mx-4 max-w-lg md:max-w-4xl w-full mb-4 bg-blue-200">
-        <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300">
-          <h2 className="text-xl font-bold text-gray-900">Experience</h2>
+        <div className=" rounded-lg bg-blue-200 p-5 m-3  ">
+          <h2 className="text-2xl font-bold text-gray-900 ">Experience</h2>
           {allExperience.map((experience, index) => (
             <ul className="" key={experience.id}>
               <li className="group">

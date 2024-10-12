@@ -106,16 +106,13 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
 
             <div
               ref={userMenuRef}
-              className={`absolute left-0 top-full mt-2 z-50 ${
-                isUserMenuOpen ? "block" : "hidden"
-              } text-base list-none  divide-y  rounded-lg shadow bg-sky-700 divide-gray-600 w-auto`}
-              id="user-dropdown"
+              className={`absolute ${isUserMenuOpen ? "block" : "hidden"} text-base list-none divide-y rounded-lg shadow bg-sky-700 divide-gray-600  z-50 top-full left-0 left-auto right-0`}
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 text-white">
+                <span className="block text-sm text-white">
                   {profileData.userProps[0].name}
                 </span>
-                <span className="block text-sm  truncate text-gray-400">
+                <span className="block text-sm truncate text-gray-400">
                   {profileData.userProps[0].email}
                 </span>
               </div>

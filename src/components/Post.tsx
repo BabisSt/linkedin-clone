@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Dialog, DialogBody } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
+import Comments from "./Comments";
 
 /**
  * TODO: take post data from backend-api
+ * TODO: Add comments to posts
  */
 interface postDataProps {
   id: string;
@@ -26,7 +29,8 @@ export default function Post({
 }: postDataProps) {
   const [openDial, setOpenDial] = useState(false);
   const [liked, setLiked] = useState(false);
-
+  const [openComments, setOpenComments] = useState(false);
+  const navigate = useNavigate();
   const handlePhotoClick = () => {
     setOpenDial(!openDial);
   };
@@ -39,20 +43,31 @@ export default function Post({
     setLiked(!liked);
   };
 
+  const navigateToUser = (name: string) => {
+    navigate("/profile" + `/${name}`);
+  };
+
+  const toggleComments = () => {
+    setOpenComments(!openComments);
+  };
   return (
     <div className="flex">
       <div className="flex shadow-lg rounded-lg mx-4 md:mx-auto max-w-lg md:max-w-4xl bg-blue-200 w-full mb-4">
         <div className="flex flex-col items-start px-4 py-6 w-full">
           <div className="flex items-center justify-between w-full">
-            <img
-              className="w-12 h-12 rounded-full object-cover shadow mr-3"
-              src={avatar}
-              alt="avatar"
-            />
+            <button onClick={() => navigateToUser(name)}>
+              <img
+                className="w-12 h-12 rounded-full object-cover shadow mr-3"
+                src={avatar}
+                alt="avatar"
+              />
+            </button>
             <div className="flex flex-col sm:flex-row items-start sm:items-center w-full">
-              <h2 className="text-lg font-semibold text-gray-900 break-words max-w-full">
-                {name}
-              </h2>
+              <button onClick={() => navigateToUser(name)}>
+                <h2 className="text-lg font-semibold text-gray-900 break-words max-w-full">
+                  {name}
+                </h2>
+              </button>
               <small className="text-sm text-gray-700 sm:ml-4 break-words max-w-full">
                 {postTime}
               </small>
@@ -71,8 +86,6 @@ export default function Post({
             className="flex items-center justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent"
             onClick={handleClose}
             placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
           >
             <div
               className="fixed inset-0 opacity-50 backdrop-blur-md"
@@ -83,8 +96,6 @@ export default function Post({
               className="flex items-center justify-center p-0 bg-transparent"
               onClick={(e) => e.stopPropagation()}
               placeholder={undefined}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
             >
               <img
                 alt="nature"
@@ -117,7 +128,10 @@ export default function Post({
               </svg>
               <span className="pt-1">{likes}</span>
             </div>
-            <div className="flex text-gray-700 text-sm mr-8">
+            <div
+              onClick={toggleComments}
+              className="flex text-gray-700 text-sm mr-8 cursor-pointer"
+            >
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -150,6 +164,7 @@ export default function Post({
               <span>share</span>
             </div>
           </div>
+          {openComments && <Comments />}
         </div>
       </div>
     </div>
