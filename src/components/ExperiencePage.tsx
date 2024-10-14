@@ -118,7 +118,6 @@ export default function ExperiencePage() {
 
       setOpenExperienceDialog(false);
     }
-    // console.log(allExperience);
   };
 
   useEffect(() => {

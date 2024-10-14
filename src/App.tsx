@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import Profile from "./profile";
 import "./index.css";
 import { ProfileContext } from "./context";
+import Network from "./network";
 
 interface PostProps {
   id: string;
@@ -20,8 +21,17 @@ interface PostProps {
   postedByAvatar: string;
   content: string;
   likes: string;
-  comments: string;
+  numberOfComments: string;
   photo: string;
+  comments: Comment[];
+}
+
+export interface Comment {
+  id: string;
+  avatar: string;
+  name: string;
+  datePosted: string;
+  content: string;
 }
 
 export interface Experience {
@@ -65,9 +75,29 @@ export default function App() {
       content:
         "Lorem ipsum, dolor sit amet conse. Saepe optio minus rem dolor sit amet!",
       likes: "8",
-      comments: "122",
+      numberOfComments: "122",
       photo:
         "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      comments: [
+        {
+          id: "1",
+          avatar:
+            "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+          name: "Michael Gough",
+          datePosted: "Feb. 8, 2022",
+          content:
+            "Very straight-to-point article. Really worth time reading. Thankyou! But tools are just the instruments for the UX designers. Theknowledge of the design tools are as important as the creation ofthe design strategy.",
+        },
+        {
+          id: "2",
+          avatar:
+            "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+          name: "Michael Gough",
+          datePosted: "Feb. 8, 2022",
+          content:
+            "Very straight-to-point article. Really worth time reading. Thankyou! But tools are just the instruments for the UX designers. Theknowledge of the design tools are as important as the creation ofthe design strategy.",
+        },
+      ],
     },
     {
       id: "2",
@@ -78,9 +108,29 @@ export default function App() {
       content:
         "Lorem ipsum, dolor sit amet conse. Saepe optio minus rem dolor sit amet!",
       likes: "8",
-      comments: "122",
+      numberOfComments: "122",
       photo:
         "https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
+      comments: [
+        {
+          id: "1",
+          avatar:
+            "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+          name: "Michael Gough",
+          datePosted: "Feb. 8, 2022",
+          content:
+            "Very straight-to-point article. Really worth time reading. Thankyou! But tools are just the instruments for the UX designers. Theknowledge of the design tools are as important as the creation ofthe design strategy.",
+        },
+        {
+          id: "2",
+          avatar:
+            "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+          name: "Michael Gough",
+          datePosted: "Feb. 8, 2022",
+          content:
+            "Very straight-to-point article. Really worth time reading. Thankyou! But tools are just the instruments for the UX designers. Theknowledge of the design tools are as important as the creation ofthe design strategy.",
+        },
+      ],
     },
   ];
 
@@ -150,6 +200,10 @@ export default function App() {
               <Route
                 path="/home"
                 element={<PrivateRoute element={<Home />} />}
+              />
+              <Route
+                path="/network"
+                element={<PrivateRoute element={<Network />} />}
               />
             </Routes>
           </div>

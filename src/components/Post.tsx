@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Dialog, DialogBody } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import Comments from "./Comments";
+import CommentsSection from "./CommentsSection";
+import { Comment } from "../App";
 
 /**
  * TODO: take post data from backend-api
- * TODO: Add comments to posts
  */
+
 interface postDataProps {
   id: string;
   name: string;
@@ -14,8 +15,9 @@ interface postDataProps {
   postTime: string;
   content: string;
   likes: string;
-  comments: string;
+  numberOfComments: string;
   photo?: string;
+  comments: Comment[];
 }
 
 export default function Post({
@@ -24,8 +26,9 @@ export default function Post({
   postTime,
   content,
   likes,
-  comments,
+  numberOfComments,
   photo,
+  comments,
 }: postDataProps) {
   const [openDial, setOpenDial] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -86,6 +89,8 @@ export default function Post({
             className="flex items-center justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent"
             onClick={handleClose}
             placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
             <div
               className="fixed inset-0 opacity-50 backdrop-blur-md"
@@ -96,6 +101,8 @@ export default function Post({
               className="flex items-center justify-center p-0 bg-transparent"
               onClick={(e) => e.stopPropagation()}
               placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               <img
                 alt="nature"
@@ -145,7 +152,7 @@ export default function Post({
                   d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"
                 />
               </svg>
-              <span className="pt-1">{comments}</span>
+              <span className="pt-1">{numberOfComments}</span>
             </div>
             <div className="flex text-gray-700 text-sm mr-4">
               <svg
@@ -164,7 +171,12 @@ export default function Post({
               <span>share</span>
             </div>
           </div>
-          {openComments && <Comments />}
+          {openComments && (
+            <CommentsSection
+              numberOfComments={numberOfComments}
+              comments={comments}
+            />
+          )}
         </div>
       </div>
     </div>

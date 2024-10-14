@@ -24,8 +24,9 @@ export default function Home() {
             postTime={data.postTime}
             content={data.content}
             likes={data.likes}
-            comments={data.comments}
+            numberOfComments={data.numberOfComments}
             photo={data.photo}
+            comments={data.comments}
           />
         </div>
       ))}
