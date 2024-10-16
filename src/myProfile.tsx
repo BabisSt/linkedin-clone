@@ -7,7 +7,7 @@ import ExperiencePage from "./components/ExperiencePage";
  * TODO: Add title to the data
  */
 
-export default function Profile() {
+export default function MyProfile() {
   return (
     <div>
       <ProfileHeader />

@@ -9,7 +9,9 @@ import NavBar from "./components/NavBar";
 import PrivateRoute from "./components/PrivateRoute";
 import Unauthorized from "./unauthorized";
 import Footer from "./components/Footer";
+import MyProfile from "./myProfile";
 import Profile from "./profile";
+import Jobs from "./jobs";
 import "./index.css";
 import { ProfileContext } from "./context";
 import Network from "./network";
@@ -184,7 +186,11 @@ export default function App() {
                 path="/"
                 element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
               />
-              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/profile"
+                element={<PrivateRoute element={<MyProfile />} />}
+              />
+              <Route path="/profile/:userName" element={<Profile />} />
               <Route
                 path="/login"
                 element={<Login setShowNavFooter={setShowNavFooter} />}
@@ -204,6 +210,10 @@ export default function App() {
               <Route
                 path="/network"
                 element={<PrivateRoute element={<Network />} />}
+              />
+              <Route
+                path="/jobs"
+                element={<PrivateRoute element={<Jobs />} />}
               />
             </Routes>
           </div>
