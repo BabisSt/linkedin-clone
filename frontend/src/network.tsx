@@ -131,7 +131,8 @@ export default function Network() {
   const [buttonTexts, setButtonTexts] = useState(people.map(() => "Connect"));
   const addFriend = (index: number) => {
     const updatedButtonTexts = [...buttonTexts];
-    updatedButtonTexts[index] = "Pending";
+    updatedButtonTexts[index] =
+      updatedButtonTexts[index] === "Pending" ? "Connect" : "Pending";
     setButtonTexts(updatedButtonTexts);
   };
 
@@ -145,27 +146,15 @@ export default function Network() {
         <ul className="space-y-4">
           <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
             <span className="font-medium">Connections</span>
-            <span className="font-bold text-sm bg-gray-300 text-gray-800 rounded-full px-2 py-1">
-              691
-            </span>
           </li>
           <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
             <span className="font-medium">Contacts</span>
-            <span className="font-bold text-sm bg-gray-300 text-gray-800 rounded-full px-2 py-1">
-              148
-            </span>
           </li>
           <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
             <span className="font-medium">Groups</span>
-            <span className="font-bold text-sm bg-gray-300 text-gray-800 rounded-full px-2 py-1">
-              2
-            </span>
           </li>
           <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
             <span className="font-medium">Pages</span>
-            <span className="font-bold text-sm bg-gray-300 text-gray-800 rounded-full px-2 py-1">
-              102
-            </span>
           </li>
         </ul>
       </div>
