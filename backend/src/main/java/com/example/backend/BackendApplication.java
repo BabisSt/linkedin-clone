@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.core.env.Environment;
 
+import com.example.backend.model.Jobs;
 import com.example.backend.model.People;
+import com.example.backend.service.JobsService;
 import com.example.backend.service.PeopleService;
 
 @RestController
@@ -28,13 +30,12 @@ import com.example.backend.service.PeopleService;
 @SpringBootApplication
 public class BackendApplication {
 
-	@Autowired
-	private Environment env;
-
 	private final PeopleService peopleService;
+	private final JobsService jobsService;
 
-	public BackendApplication(PeopleService peopleService) {
+	public BackendApplication(PeopleService peopleService, JobsService jobsService) {
 		this.peopleService = peopleService;
+		this.jobsService = jobsService;
 	}
 
 	public static void main(String[] args) {
@@ -45,6 +46,12 @@ public class BackendApplication {
 	@ResponseBody
 	public List<People> fetchPeople() {
 		return peopleService.getAllPeople();
+	}
+
+	@GetMapping("/jobs")
+	@ResponseBody
+	public List<Jobs> fetchJobs() {
+		return jobsService.getAllJobs();
 	}
 
 }

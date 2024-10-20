@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface People {
@@ -8,125 +8,28 @@ interface People {
   company: string;
 }
 
-const people: People[] = [
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "A",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "B",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "C",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-  {
-    avatar:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHaeXnMmfjvyQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706286002081?e=2147483647&v=beta&t=eB6QsKVtfFsKQHBnnR1jUZaiHSJgJOv0d_BOhoiBlxo",
-    name: "Bonnie Green",
-    role: "Visual Designer",
-    company: "Intrasoft",
-  },
-];
 export default function Network() {
   const navigate = useNavigate();
   const navigateToUser = (name: string) => {
     navigate("/profile" + `/${name}`);
   };
+
+  //Access backend
+  const [people, setPeople] = useState<People[]>([]);
+  useEffect(() => {
+    const fetchPeople = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/people");
+        const data: People[] = await response.json();
+        setPeople(data);
+        setButtonTexts(data.map(() => "Connect"));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPeople();
+  }, []);
 
   const [buttonTexts, setButtonTexts] = useState(people.map(() => "Connect"));
   const addFriend = (index: number) => {

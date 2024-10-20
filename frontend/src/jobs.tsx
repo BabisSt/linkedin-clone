@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 /**
  * TODO: Add functionality on save,apply buttons
@@ -13,58 +13,6 @@ interface Job {
   about: string;
 }
 
-const jobs: Job[] = [
-  {
-    title: "mmmmm",
-    companyName: "A",
-    companyLogo:
-      "https://media.licdn.com/dms/image/v2/D4D0BAQEqwjMyiYrA0Q/company-logo_100_100/company-logo_100_100/0/1700826336454?e=1736985600&v=beta&t=U0qjz7gjMkRRpFzQQGeAItZw4ZRPRAqzuz_MT8l9HeI",
-    location: "Athens, Attiki, Greece (Hybrid)",
-    level: "Internship",
-    about:
-      "Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to proide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to proide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading",
-  },
-  {
-    title: "PHP",
-    companyName: "B",
-    companyLogo:
-      "https://media.licdn.com/dms/image/v2/D4D0BAQEqwjMyiYrA0Q/company-logo_100_100/company-logo_100_100/0/1700826336454?e=1736985600&v=beta&t=U0qjz7gjMkRRpFzQQGeAItZw4ZRPRAqzuz_MT8l9HeI",
-    location: "Athens, Attiki, Greece (Hybrid)",
-    level: "Internship",
-    about:
-      "Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to provide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading ",
-  },
-  {
-    title: "PHP Developer",
-    companyName: "bFlex.io",
-    companyLogo:
-      "https://media.licdn.com/dms/image/v2/D4D0BAQEqwjMyiYrA0Q/company-logo_100_100/company-logo_100_100/0/1700826336454?e=1736985600&v=beta&t=U0qjz7gjMkRRpFzQQGeAItZw4ZRPRAqzuz_MT8l9HeI",
-    location: "Athens, Attiki, Greece (Hybrid)",
-    level: "Internship",
-    about:
-      "Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to provide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading ",
-  },
-  {
-    title: "PHP Developer",
-    companyName: "bFlex.io",
-    companyLogo:
-      "https://media.licdn.com/dms/image/v2/D4D0BAQEqwjMyiYrA0Q/company-logo_100_100/company-logo_100_100/0/1700826336454?e=1736985600&v=beta&t=U0qjz7gjMkRRpFzQQGeAItZw4ZRPRAqzuz_MT8l9HeI",
-    location: "Athens, Attiki, Greece (Hybrid)",
-    level: "Internship",
-    about:
-      "Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to provide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading ",
-  },
-  {
-    title: "PHP Developer",
-    companyName: "bFlex.io",
-    companyLogo:
-      "https://media.licdn.com/dms/image/v2/D4D0BAQEqwjMyiYrA0Q/company-logo_100_100/company-logo_100_100/0/1700826336454?e=1736985600&v=beta&t=U0qjz7gjMkRRpFzQQGeAItZw4ZRPRAqzuz_MT8l9HeI",
-    location: "Athens, Attiki, Greece (Hybrid)",
-    level: "Internship",
-    about:
-      "Connecting networks, clouds and businesses, Console Connect by PCCW Global is dedicated to helping organisations overcome the barriers and complexity of connecting to the cloud. Our goal is to provide businesses with on-demand, dedicated connectivity into cloud service providers and partners around the globe, making access to business-critical applications simple, predictable and ultra-secure.Console Connect by PCCW Global is the world’s first global software-defined interconnection platform, born out of the belief that business connectivity should be simpler and more accessible for all. Console Connect enables users to efficiently manage their private connections via a user-friendly interface, regardless of their level of technical expertise.Backed by PCCW Global, one of the world’s leading .",
-  },
-];
 export default function Jobs() {
   const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(
     null
@@ -81,6 +29,23 @@ export default function Jobs() {
     updatedButtonTexts = updatedButtonTexts === "Save" ? "Saved" : "Save";
     setSaveButtonTexts(updatedButtonTexts);
   };
+
+  //Access backend
+  const [jobs, setJobs] = useState<Job[]>([]);
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/jobs");
+        const data: Job[] = await response.json();
+        setJobs(data);
+        // setSaveButtonTexts(data.map(() => "Connect"));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 gap-4">
