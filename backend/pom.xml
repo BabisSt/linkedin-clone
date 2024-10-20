@@ -40,6 +40,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
@@ -64,6 +70,15 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		 <resources>     
+        <resource>
+            <filtering>true</filtering>
+            <directory>src/main/com/example/backend/rescources</directory>
+            <includes>                      
+                <include>**/*.properties</include>                  
+            </includes>
+        </resource>            
+    </resources>
 	</build>
 
 </project>
