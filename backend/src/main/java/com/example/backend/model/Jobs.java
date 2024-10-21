@@ -1,7 +1,5 @@
 package com.example.backend.model;
 
-import java.sql.Date;
-
 public class Jobs {
     private String id;
     private String title;
@@ -10,9 +8,10 @@ public class Jobs {
     private String location;
     private String level;
     private String about;
+    private String save;
 
     public Jobs(String id, String title, String companyName, String companyLogo, String location, String level,
-            String about) {
+            String about, String save) {
         this.id = id;
         this.title = title;
         this.companyName = companyName;
@@ -20,6 +19,7 @@ public class Jobs {
         this.location = location;
         this.level = level;
         this.about = about;
+        this.save = save;
     }
 
     public String getId() {
@@ -48,6 +48,10 @@ public class Jobs {
 
     public String getAbout() {
         return about;
+    }
+
+    public String getSave() {
+        return save;
     }
 
 }

@@ -47,6 +47,7 @@ export interface Experience {
 }
 
 export interface UserProps {
+  id: string;
   name: string;
   email: string;
   avatar: string;
@@ -139,6 +140,7 @@ export default function App() {
   const [profileData] = useState<AppData>({
     userProps: [
       {
+        id: "1",
         name: "Brad Adams",
         email: "Brad@gmail.com",
         avatar:

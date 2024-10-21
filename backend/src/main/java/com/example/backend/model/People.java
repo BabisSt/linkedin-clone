@@ -1,7 +1,5 @@
 package com.example.backend.model;
 
-import java.sql.Date;
-
 public class People {
     private String id;
     private String avatar;

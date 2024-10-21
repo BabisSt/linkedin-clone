@@ -6,7 +6,6 @@ import com.example.backend.model.People;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class PeopleImpl implements PeopleInterface {

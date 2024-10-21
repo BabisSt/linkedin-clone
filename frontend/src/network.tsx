@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface People {
+  id: string;
   avatar: string;
   name: string;
   role: string;
