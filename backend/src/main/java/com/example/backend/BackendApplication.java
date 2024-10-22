@@ -11,13 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.model.Comments;
+import com.example.backend.model.Experiences;
 import com.example.backend.model.Jobs;
 import com.example.backend.model.People;
 import com.example.backend.model.Posts;
+import com.example.backend.model.Skills;
 import com.example.backend.model.Users;
+import com.example.backend.service.CommentsService;
+import com.example.backend.service.ExperiencesService;
 import com.example.backend.service.JobsService;
 import com.example.backend.service.PeopleService;
 import com.example.backend.service.PostsService;
+import com.example.backend.service.SkillsService;
 import com.example.backend.service.UsersService;
 
 @RestController
@@ -30,13 +36,20 @@ public class BackendApplication {
 	private final JobsService jobsService;
 	private final UsersService usersService;
 	private final PostsService postsService;
+	private final CommentsService commentsService;
+	private final ExperiencesService experiencesService;
+	private final SkillsService skillsService;
 
 	public BackendApplication(PeopleService peopleService, JobsService jobsService, UsersService usersService,
-			PostsService postsService) {
+			PostsService postsService, CommentsService commentsService, ExperiencesService experiencesService,
+			SkillsService skillsService) {
 		this.peopleService = peopleService;
 		this.jobsService = jobsService;
 		this.usersService = usersService;
 		this.postsService = postsService;
+		this.commentsService = commentsService;
+		this.experiencesService = experiencesService;
+		this.skillsService = skillsService;
 	}
 
 	public static void main(String[] args) {
@@ -59,6 +72,24 @@ public class BackendApplication {
 	@ResponseBody
 	public List<Posts> fetchPosts() {
 		return postsService.getAllPosts();
+	}
+
+	@GetMapping("/comments")
+	@ResponseBody
+	public List<Comments> fetchComments() {
+		return commentsService.getAllComments();
+	}
+
+	@GetMapping("/experiences")
+	@ResponseBody
+	public List<Experiences> fetchExperiences() {
+		return experiencesService.getAllExperiences();
+	}
+
+	@GetMapping("/skills")
+	@ResponseBody
+	public List<Skills> fetchSkills() {
+		return skillsService.getAllSkills();
 	}
 
 	@GetMapping("/jobs")
