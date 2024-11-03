@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./components/Post";
 import NewPost from "./components/NewPost";
-import { useProfileContext } from "./context";
 import { useNavigate } from "react-router-dom";
+import { PostProps } from "./App";
 
 /**
  *
@@ -12,7 +12,37 @@ import { useNavigate } from "react-router-dom";
  */
 
 export default function Home() {
-  const posts = useProfileContext();
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/posts");
+        const data: PostProps[] = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const getLoggedInUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser); // Parse JSON safely
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  };
+
+  const loggedInUser = getLoggedInUser();
   const navigate = useNavigate();
 
   const navigateProfile = () => {
@@ -35,19 +65,19 @@ export default function Home() {
         <button onClick={navigateProfile}>
           <img
             className="w-20 h-20 mb-4 rounded-full shadow-md object-cover"
-            src={posts.userProps[0].avatar}
+            src={loggedInUser.avatar}
             alt="User Avatar"
           />
         </button>
 
         <button onClick={navigateProfile}>
           <h5 className="text-lg font-semibold text-gray-700">
-            {posts.userProps[0].name}
+            {loggedInUser.name}
           </h5>
         </button>
 
         <span className="block text-sm text-gray-500 mt-2">
-          {posts.userProps[0].email}
+          {loggedInUser.email}
         </span>
 
         <ul className="space-y-4 mt-4 w-full ">
@@ -68,7 +98,7 @@ export default function Home() {
 
       <div className="max-w-full md:max-w-4xl col-span-1 md:col-span-6 lg:col-start-5 lg:col-end-10  p-4 sm:m-4">
         <NewPost />
-        {posts.userProps[0].postData.map((data) => (
+        {posts.map((data) => (
           <div key={data.id}>
             <Post
               id={data.id}

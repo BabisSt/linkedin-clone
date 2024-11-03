@@ -6,11 +6,10 @@ import { AppData } from "./App";
  * useProfileContext : custom hook to avoid compile erros on undefined Data
  */
 
-export const ProfileContext = createContext<AppData | undefined>(undefined);
+export const ProfileContext = createContext<AppData[] | undefined>(undefined);
 
 export function useProfileContext () {
     const data = useContext(ProfileContext);
-
     if( data === undefined){
         throw new Error('useProfileContext must be used with a ProfileContext')
     }

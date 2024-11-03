@@ -18,4 +18,8 @@ public class UsersService {
     public List<Users> getAllUsers() {
         return usersInterface.getAllUsers();
     }
+
+    public Users getUserById(String id) {
+        return usersInterface.getUserById(id);
+    }
 }

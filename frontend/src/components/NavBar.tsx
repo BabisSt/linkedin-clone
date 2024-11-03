@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "/LinkedIn_logo_.png";
 import userImage from "/user.png";
-import { useProfileContext } from "../context";
 
 /**
  * TODO: Add email to the data
@@ -14,8 +13,23 @@ interface NavBarProps {
 export default function NavBar({ setShowNavFooter }: NavBarProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const profileData = useProfileContext();
-  const avatar = profileData.userProps[0].avatar;
+
+  const getLoggedInUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser); // Parse JSON safely
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  };
+
+  let loggedInUser = getLoggedInUser();
 
   const routeHome = () => {
     navigate("/home");
@@ -58,6 +72,7 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
   };
 
   useEffect(() => {
+    loggedInUser = getLoggedInUser();
     const handleClickOutside = (event: MouseEvent) => {
       if (
         userMenuRef.current &&
@@ -71,6 +86,8 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const avatar = loggedInUser.avatar;
 
   const getButtonClass = (path: string) =>
     location.pathname === path
@@ -110,10 +127,10 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
             >
               <div className="px-4 py-3">
                 <span className="block text-sm text-white">
-                  {profileData.userProps[0].name}
+                  {loggedInUser.name}
                 </span>
                 <span className="block text-sm truncate text-gray-400">
-                  {profileData.userProps[0].email}
+                  {loggedInUser.email}
                 </span>
               </div>
               <ul className="py-2" aria-labelledby="user-menu-button">

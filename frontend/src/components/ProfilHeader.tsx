@@ -4,6 +4,7 @@ import { Dialog, DialogBody } from "@material-tailwind/react";
 
 /**
  * TODO : use GenericDialog for dialogs
+ * TODO : uselocal storage to get the clicked data here
  */
 export default function ProfileHeader() {
   const [openAvatarDial, setOpenAvatarDial] = useState(false);

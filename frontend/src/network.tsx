@@ -11,8 +11,8 @@ interface People {
 
 export default function Network() {
   const navigate = useNavigate();
-  const navigateToUser = (name: string) => {
-    navigate("/profile" + `/${name}`);
+  const navigateToUser = (id: string) => {
+    navigate("/profile" + `/${id}`);
   };
 
   //Access backend
@@ -74,14 +74,14 @@ export default function Network() {
               key={index}
             >
               <div className="flex flex-col items-center pb-10">
-                <button onClick={() => navigateToUser(person.name)}>
+                <button onClick={() => navigateToUser(person.id)}>
                   <img
                     className="w-24 h-24 mb-3 rounded-full shadow-lg"
                     src={person.avatar}
                     alt="Photo"
                   />
                 </button>
-                <button onClick={() => navigateToUser(person.name)}>
+                <button onClick={() => navigateToUser(person.id)}>
                   <h5 className="mb-1 text-xl font-medium text-gray-200">
                     {person.name}
                   </h5>

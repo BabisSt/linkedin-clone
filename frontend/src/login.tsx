@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import logo from "/LinkedIn_logo_.png";
 import { useNavigate } from "react-router-dom";
+
 interface LoginProps {
   setShowNavFooter: (value: boolean) => void;
 }
 
-/**
- *
- * TODO: add backend Logic
- */
 export default function Login({ setShowNavFooter }: LoginProps) {
   const navigate = useNavigate();
 
@@ -16,7 +13,6 @@ export default function Login({ setShowNavFooter }: LoginProps) {
   const [LoginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  //Need to specify the event type
   const handleLoginEmailChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -29,45 +25,65 @@ export default function Login({ setShowNavFooter }: LoginProps) {
     setLoginPassword(event.target.value);
   };
 
-  //check if username and password are empty, else navigate to home
-  const handleLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!LoginEmail || !LoginPassword) {
       setLoginError("Email and password cannot be empty.");
-    } else {
-      setLoginError("");
-      navigate("/home");
-      setShowNavFooter(true);
+      return;
+    }
+
+    setLoginError("");
+
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: LoginEmail, password: LoginPassword }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+
+        localStorage.setItem("user", JSON.stringify(userData)); // Store as JSON string
+        setShowNavFooter(true);
+        navigate("/home");
+      } else {
+        setLoginError("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setLoginError("An error occurred. Please try again.");
     }
   };
 
-  //trigger showNavFooter asap, so nav and footer dont show up in 404
   useEffect(() => {
     setShowNavFooter(false);
-  }, []);
+  }, [setShowNavFooter]);
 
   const navigateRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
     navigate("/register");
   };
+
   return (
     <section>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="flex pb-16">
           <img src={logo} className="h-8" alt="LinkedIn Logo" />
-          <span className=" text-2xl font-bold whitespace-nowrap text-white">
+          <span className="text-2xl font-bold whitespace-nowrap text-white">
             LinkedIn
           </span>
         </div>
 
-        <div className="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
+        <div className="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
               <div>
                 <label
                   htmlFor="email"
@@ -80,7 +96,7 @@ export default function Login({ setShowNavFooter }: LoginProps) {
                   name="email"
                   id="email"
                   onChange={handleLoginEmailChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="name@company.com"
                   required
                 />
@@ -98,7 +114,7 @@ export default function Login({ setShowNavFooter }: LoginProps) {
                   id="password"
                   placeholder="••••••••"
                   onChange={handleLoginPasswordChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required
                 />
               </div>
@@ -119,18 +135,11 @@ export default function Login({ setShowNavFooter }: LoginProps) {
                     </label>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="text-sm font-medium hover:underline text-primary-500"
-                >
-                  Forgot password?
-                </a>
               </div>
               <p className="text-red-500">{loginError}</p>
               <button
-                onClick={handleLogin}
                 type="submit"
-                className="mt-4  text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none  focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+                className="mt-4 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
               >
                 Log in
               </button>

@@ -68,6 +68,12 @@ public class BackendApplication {
 		return usersService.getAllUsers();
 	}
 
+	@GetMapping("/users/{id}")
+	@ResponseBody
+	public Users fetchUserById(@PathVariable String id) {
+		return usersService.getUserById(id);
+	}
+
 	@GetMapping("/posts")
 	@ResponseBody
 	public List<Posts> fetchPosts() {
