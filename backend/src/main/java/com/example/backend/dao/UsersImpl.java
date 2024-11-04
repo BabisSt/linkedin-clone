@@ -77,8 +77,8 @@ public class UsersImpl implements UsersInterface {
         String id = rs.getString("id");
         String name = rs.getString("name");
         String email = rs.getString("email");
-        String avatar = rs.getString("bg");
-        String bg = rs.getString("avatar");
+        String avatar = rs.getString("avatar");
+        String bg = rs.getString("bg");
         String aboutContent = rs.getString("about_content");
         String username = rs.getString("username");
         String password = rs.getString("password");

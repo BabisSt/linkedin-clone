@@ -1,19 +1,22 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useProfileContext } from "../context";
 import { Dialog, DialogBody } from "@material-tailwind/react";
+import { UserProps } from "../App";
 
 /**
  * TODO : use GenericDialog for dialogs
  * TODO : uselocal storage to get the clicked data here
  */
-export default function ProfileHeader() {
+
+interface ProfileHeaderProps {
+  loggedInUser: UserProps;
+}
+export default function ProfileHeader({ loggedInUser }: ProfileHeaderProps) {
   const [openAvatarDial, setOpenAvatarDial] = useState(false);
   const [avatarPhoto, setAvatarPhoto] = useState("");
   const [openBGDial, setOpenBGDial] = useState(false);
   const [BGPhoto, setBGPhoto] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
-
-  const profileData = useProfileContext();
 
   const handleAvatarPhotoClick = () => {
     setOpenAvatarDial(!openAvatarDial);
@@ -33,8 +36,8 @@ export default function ProfileHeader() {
   };
 
   const handleSaveAvatarPhoto = () => {
-    if (avatarPhoto !== profileData.userProps[0].avatar) {
-      profileData.userProps[0].avatar = avatarPhoto;
+    if (avatarPhoto !== loggedInUser.avatar) {
+      loggedInUser.avatar = avatarPhoto;
       setSavedMessage("Successfully Saved!");
     }
   };
@@ -57,16 +60,16 @@ export default function ProfileHeader() {
   };
 
   const handleSaveBGPhoto = () => {
-    if (BGPhoto !== profileData.userProps[0].BG) {
-      profileData.userProps[0].BG = BGPhoto;
+    if (BGPhoto !== loggedInUser.bg) {
+      loggedInUser.bg = BGPhoto;
       setSavedMessage("Successfully Saved!");
     }
   };
 
   useEffect(() => {
-    setAvatarPhoto(profileData.userProps[0].avatar);
-    setBGPhoto(profileData.userProps[0].BG);
-  }, [profileData]);
+    setAvatarPhoto(loggedInUser.avatar);
+    setBGPhoto(loggedInUser.bg);
+  }, [loggedInUser]);
 
   return (
     <div>
@@ -75,7 +78,7 @@ export default function ProfileHeader() {
           <button onClick={handleBGPhotoClick}>
             <div className="relative w-full h-48 rounded-t-lg overflow-hidden z-0">
               <img
-                src={profileData.userProps[0].BG}
+                src={loggedInUser.bg}
                 alt="Background"
                 className="w-full h-full object-cover p-1 rounded-t-lg"
               />
@@ -93,7 +96,7 @@ export default function ProfileHeader() {
 
             <div className="text-center my-4">
               <h2 className="text-2xl font-bold text-gray-900 my-2">
-                {profileData.userProps[0].name}
+                {loggedInUser.name}
               </h2>
               <p className="text-sm text-gray-600">
                 Software Engineer at Netcompany-Intrasoft

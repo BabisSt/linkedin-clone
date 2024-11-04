@@ -51,7 +51,7 @@ export interface UserProps {
   name: string;
   email: string;
   avatar: string;
-  BG: string;
+  bg: string;
   aboutContent: string;
   postData: PostProps[];
   topSkills: string[];

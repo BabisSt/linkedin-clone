@@ -49,6 +49,7 @@ export default function Login({ setShowNavFooter }: LoginProps) {
 
         localStorage.setItem("user", JSON.stringify(userData)); // Store as JSON string
         setShowNavFooter(true);
+        console.log("userData" + userData.bg);
         navigate("/home");
       } else {
         setLoginError("Login failed. Please check your credentials.");

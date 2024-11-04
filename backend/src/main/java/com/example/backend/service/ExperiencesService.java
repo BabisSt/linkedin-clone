@@ -2,6 +2,8 @@ package com.example.backend.service;
 
 import com.example.backend.dao.ExperiencesInterface;
 import com.example.backend.model.Experiences;
+import com.example.backend.model.Skills;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +19,9 @@ public class ExperiencesService {
 
     public List<Experiences> getAllExperiences() {
         return experiencesInterface.getAllExperiences();
+    }
+
+    public Experiences getExperiencesById(String id) {
+        return experiencesInterface.getExperiencesById(id);
     }
 }

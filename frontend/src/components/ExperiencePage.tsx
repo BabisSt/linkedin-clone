@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { useProfileContext } from "../context";
 import GenericDialog from "./GenericDialog";
 import SingleExperience from "./SingleExperience";
 import EditButton from "./EditButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Experience } from "../App";
+import { Experience, UserProps } from "../App";
 
 /**
  * TODO : Fix add and delete experience
  */
-export default function ExperiencePage() {
-  const profileData = useProfileContext();
+interface ExperiencePageProps {
+  loggedInUser: UserProps;
+}
+
+export default function ExperiencePage({ loggedInUser }: ExperiencePageProps) {
   const [openExperienceDialog, setOpenExperienceDialog] = useState(false);
   const [experience, setExperience] = useState<Experience | null>(null);
-  const [allExperience, setAllExperience] = useState(
-    profileData.userProps[0]?.experience || []
-  );
+
+  const [allExperience, setAllExperience] = useState<Experience[]>([]);
+  useEffect(() => {
+    const fetchExperiences = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/experiences/${loggedInUser.id}`
+        );
+        const data = await response.json();
+
+        // Check if the response is an array, if not wrap it in an array
+        const experiencesArray = Array.isArray(data) ? data : [data];
+
+        setAllExperience(experiencesArray);
+        console.log(experiencesArray);
+      } catch (error) {
+        console.error("Failed to fetch experiences:", error);
+        setAllExperience([]); // Set to an empty array in case of error
+      }
+    };
+
+    fetchExperiences();
+  }, [loggedInUser.id]);
+
   const [savedMessage, setSavedMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [levelDropdown, setLevelDropdown] = useState(false);
@@ -114,15 +137,15 @@ export default function ExperiencePage() {
       setAllExperience(updatedExperiences);
       setSavedMessage("Successfully Saved!");
       setErrorMessage("");
-      profileData.userProps[0].experience = updatedExperiences;
+      // allExperience = updatedExperiences;
 
       setOpenExperienceDialog(false);
     }
   };
 
-  useEffect(() => {
-    setAllExperience(profileData.userProps[0]?.experience || []);
-  }, []);
+  // useEffect(() => {
+  //   setAllExperience(profileData.userProps[0]?.experience || []);
+  // }, []);
 
   return (
     <div className="flex justify-center items-center w-full">

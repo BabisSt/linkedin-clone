@@ -6,4 +6,5 @@ import java.util.List;
 public interface ExperiencesInterface {
     List<Experiences> getAllExperiences();
 
+    Experiences getExperiencesById(String id);
 }

@@ -33,39 +33,22 @@ public class ExperiencesImpl implements ExperiencesInterface {
         return experiences;
     }
 
-    // @Override
-    // public int updateSave(String save, String id) {
-    // String sql = "UPDATE jobs SET save = ? WHERE id = ?";
-    // try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME,
-    // DB_PASSWORD);
-    // PreparedStatement stmt = conn.prepareStatement(sql)) {
-    // stmt.setString(1, save);
-    // stmt.setString(2, id);
-    // return stmt.executeUpdate();
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // return 0;
-    // }
-    // }
-
-    // @Override
-    // public Jobs getJobById(String id) {
-    // Jobs job = null;
-    // try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME,
-    // DB_PASSWORD);
-    // PreparedStatement stmt = conn.prepareStatement("SELECT * FROM jobs WHERE id =
-    // ?")) {
-    // stmt.setString(1, id);
-    // try (ResultSet rs = stmt.executeQuery()) {
-    // if (rs.next()) {
-    // job = mapResultSetToJobs(rs);
-    // }
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // }
-    // return job;
-    // }
+    @Override
+    public Experiences getExperiencesById(String id) {
+        Experiences experiences = null;
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Experiences WHERE id = ?")) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    experiences = mapResultSetToExperiences(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return experiences;
+    }
 
     private Experiences mapResultSetToExperiences(ResultSet rs) throws SQLException {
         String id = rs.getString("id");
@@ -77,7 +60,7 @@ public class ExperiencesImpl implements ExperiencesInterface {
         String location = rs.getString("location");
         String userId = rs.getString("user_id");
 
-        return new Experiences(id, title, companyName, companyLogo, location, level, duration, userId);
+        return new Experiences(id, title, level, companyName, companyLogo, duration, location, userId);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.backend.dao;
 
 import org.springframework.stereotype.Component;
 import com.example.backend.model.Skills;
+import com.example.backend.model.Users;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -66,6 +67,23 @@ public class SkillsImpl implements SkillsInterface {
     // }
     // return job;
     // }
+
+    @Override
+    public Skills getSkillsById(String id) {
+        Skills skills = null;
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Skills WHERE id = ?")) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    skills = mapResultSetToSkills(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return skills;
+    }
 
     private Skills mapResultSetToSkills(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

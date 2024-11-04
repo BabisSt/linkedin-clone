@@ -1,14 +1,47 @@
 import React, { useEffect, useState, MouseEvent } from "react";
-import { useProfileContext } from "../context";
 import GenericDialog from "./GenericDialog";
 import EditButton from "./EditButton";
+import { UserProps } from "../App";
 
-export default function About() {
-  const profileData = useProfileContext();
+interface AboutProps {
+  loggedInUser: UserProps;
+}
+
+export default function About({ loggedInUser }: AboutProps) {
   const [openTopSkillsDialog, setOpenTopSkillsDialog] = useState(false);
   const [openAboutDialog, setOpenAboutDialog] = useState(false);
-  const [about, setAbout] = useState("");
-  const [skills, setSkills] = useState(profileData.userProps[0].topSkills);
+
+  const [skills, setSkills] = useState<string[]>([]);
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/skills/${loggedInUser.id}`
+        );
+        const data = await response.json();
+
+        const skillsData = Array.isArray(data) ? data : [data];
+
+        const skillsArray = skillsData.reduce((acc, item) => {
+          if (item.skillName) {
+            const skills = item.skillName
+              .split(",")
+              .map((skill: string) => skill.trim());
+            return acc.concat(skills);
+          }
+          return acc;
+        }, []);
+
+        setSkills(skillsArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSkills();
+  }, [loggedInUser.id]);
+
+  const [about, setAbout] = useState(loggedInUser.aboutContent);
   const [savedMessage, setSavedMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const toggleTopSkillsDialog = () => {
@@ -20,27 +53,27 @@ export default function About() {
     setOpenAboutDialog(!openAboutDialog);
   };
   const handleSaveAbout = () => {
-    if (about !== profileData.userProps[0].aboutContent) {
-      profileData.userProps[0].aboutContent = about;
+    if (about !== loggedInUser.aboutContent) {
+      loggedInUser.aboutContent = about;
       setSavedMessage("Successfully Saved!");
     }
   };
 
   const handleSaveSkills = () => {
-    let foundEmpty = false;
+    //let foundEmpty = false;
     for (let i = 0; i <= skills.length; i++) {
       if (skills[i] === "") {
         setErrorMessage("Skills can't be empty!");
-        foundEmpty = true;
+        //foundEmpty = true;
         break;
       }
     }
-    if (skills !== profileData.userProps[0].topSkills && !foundEmpty) {
-      profileData.userProps[0].topSkills = skills;
-      setSavedMessage("Successfully Saved!");
-      foundEmpty = false;
-      setErrorMessage("");
-    }
+    // if (skills !== profileData.userProps[0].topSkills && !foundEmpty) {
+    //   profileData.userProps[0].topSkills = skills;
+    //   setSavedMessage("Successfully Saved!");
+    //   foundEmpty = false;
+    //   setErrorMessage("");
+    // }
   };
 
   // Handler for updating individual skills
@@ -50,10 +83,10 @@ export default function About() {
     setSkills(updatedSkills);
   };
 
-  useEffect(() => {
-    setAbout(profileData.userProps[0].aboutContent);
-    setSkills(profileData.userProps[0].topSkills);
-  }, [profileData]);
+  // useEffect(() => {
+  //   setAbout(loggedInUser.aboutContent);
+  //   setSkills(profileData.userProps[0].topSkills);
+  // }, [loggedInUser]);
 
   const addSkill = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -76,7 +109,7 @@ export default function About() {
         <div className="group">
           <h2 className="text-2xl font-bold text-gray-900 p-4">About</h2>
           <p className="text-sm text-gray-600 text-center text-justify px-5 py-3">
-            {profileData.userProps[0].aboutContent}
+            {loggedInUser.aboutContent}
           </p>
           <EditButton functionality={toggleAboutDialog} />
         </div>
@@ -84,7 +117,7 @@ export default function About() {
         <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300 group">
           <EditButton functionality={toggleTopSkillsDialog} />
           <h2 className="text-xl font-bold text-gray-900">Top Skills</h2>
-          {profileData.userProps[0].topSkills.map((data) => (
+          {skills.map((data) => (
             <ul className="list-disc" key={data}>
               <li>{data}</li>
             </ul>
@@ -99,7 +132,7 @@ export default function About() {
         >
           <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
             <textarea
-              defaultValue={profileData.userProps[0].aboutContent}
+              defaultValue={loggedInUser.aboutContent}
               className="bg-blue-200 w-full h-56 border border-sky-800 rounded p-2"
               onChange={(e) => setAbout(e.target.value)}
             />
