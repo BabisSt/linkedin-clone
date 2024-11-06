@@ -1,11 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { useProfileContext } from "../context";
 import { Dialog, DialogBody } from "@material-tailwind/react";
 import { UserProps } from "../App";
 
 /**
  * TODO : use GenericDialog for dialogs
- * TODO : uselocal storage to get the clicked data here
+ * TODO : fix add skills and experience
  */
 
 interface ProfileHeaderProps {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "/LinkedIn_logo_.png";
 import { useNavigate } from "react-router-dom";
+
 interface RegisterProps {
   setShowNavFooter: (value: boolean) => void;
 }
@@ -8,98 +9,132 @@ interface RegisterProps {
 export default function Register({ setShowNavFooter }: RegisterProps) {
   const navigate = useNavigate();
 
+  const [RegisterFullName, setRegisterFullName] = useState("");
   const [RegisterEmail, setRegisterEmail] = useState("");
-  const [RegisterFirstName, setRegisterFirstName] = useState("");
-  const [RegisterLasttName, setRegisterLastName] = useState("");
+  const [RegisterUserName, setRegisterUserName] = useState("");
   const [RegisterPassword, setRegisterPassword] = useState("");
   const [RegisterConfirmPassword, setRegisterConfirmPassword] = useState("");
-  const [RegisterPhone, setRegisterPhone] = useState("");
+  const [RegisterAvatar, setRegisterAvatar] = useState("");
+  const [RegisterBg, setRegisterBg] = useState("");
+  const [RegisterAboutContent, setRegisterAboutContent] = useState("");
   const [registerError, setRegisterError] = useState("");
 
-  //Need to specify the event type
+  const handleRegisterFullNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRegisterFullName(event.target.value);
+  };
   const handleRegisterEmailChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRegisterEmail(event.target.value);
   };
-
-  const handleRegisterFirstNameChange = (
+  const handleRegisterUserNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRegisterFirstName(event.target.value);
-  };
-
-  const handleRegisterLastNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRegisterLastName(event.target.value);
+    setRegisterUserName(event.target.value);
   };
   const handleRegisterPasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRegisterPassword(event.target.value);
   };
-
   const handleRegisterConfirmPasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRegisterConfirmPassword(event.target.value);
   };
-
-  const handleRegisterPhoneChange = (
+  const handleRegisterAvatarChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRegisterPhone(event.target.value);
+    setRegisterAvatar(event.target.value);
+  };
+  const handleRegisterBgChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRegisterBg(event.target.value);
+  };
+  const handleRegisterAboutContentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setRegisterAboutContent(event.target.value);
   };
 
-  //check if username and password are empty, else navigate to home
-  const handleRegister = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
+      !RegisterFullName ||
       !RegisterEmail ||
-      !RegisterFirstName ||
-      !RegisterLasttName ||
+      !RegisterUserName ||
       !RegisterPassword ||
-      !RegisterConfirmPassword ||
-      !RegisterPhone
-    )
+      !RegisterConfirmPassword
+    ) {
       setRegisterError("Fields cannot be empty.");
-    else if (RegisterConfirmPassword !== RegisterPassword)
+      return;
+    }
+    if (RegisterConfirmPassword !== RegisterPassword) {
       setRegisterError("Passwords must match.");
-    else {
-      setRegisterError("");
-      navigate("/home");
-      setShowNavFooter(true);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: RegisterFullName,
+          email: RegisterEmail,
+          avatar: RegisterAvatar,
+          bg: RegisterBg,
+          about_content: RegisterAboutContent,
+          username: RegisterUserName,
+          password: RegisterPassword,
+        }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        localStorage.setItem("user", JSON.stringify(userData));
+        setShowNavFooter(true);
+        navigate("/home");
+      } else {
+        setRegisterError("Register failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setRegisterError("An error occurred. Please try again.");
     }
   };
 
-  //trigger showNavFooter asap, so nav and footer dont show up in 404
   useEffect(() => {
     setShowNavFooter(false);
   }, []);
 
   const navigateLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
     navigate("/login");
   };
+
   return (
     <section>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="flex pb-16">
           <img src={logo} className="h-8" alt="LinkedIn Logo" />
-          <span className=" text-2xl font-bold whitespace-nowrap text-white">
+          <span className="text-2xl font-bold whitespace-nowrap text-white">
             LinkedIn
           </span>
         </div>
 
-        <div className="w-full  rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
+        <div className="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-sky-800 border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
               Make a new account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
+              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -112,45 +147,103 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
                   name="email"
                   id="email"
                   onChange={handleRegisterEmailChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="name@company.com"
                   required
                 />
               </div>
+              {/* Username */}
               <div>
                 <label
-                  htmlFor="firstName"
+                  htmlFor="username"
                   className="block mb-2 text-sm font-medium text-white"
                 >
-                  First name
+                  Username
                 </label>
                 <input
                   type="text"
-                  name="firstName"
-                  id="firsName"
-                  onChange={handleRegisterFirstNameChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  name="username"
+                  id="username"
+                  onChange={handleRegisterUserNameChange}
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="John"
                   required
                 />
               </div>
+
+              {/* Fullname */}
               <div>
                 <label
-                  htmlFor="lastName"
+                  htmlFor="username"
                   className="block mb-2 text-sm font-medium text-white"
                 >
-                  Last Name
+                  Full Name
                 </label>
                 <input
                   type="text"
-                  name="lastName"
-                  id="lastName"
-                  onChange={handleRegisterLastNameChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                  placeholder="Smith"
+                  name="username"
+                  id="username"
+                  onChange={handleRegisterFullNameChange}
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="John Smith"
                   required
                 />
               </div>
+
+              {/* Avatar URL */}
+              <div>
+                <label
+                  htmlFor="avatar"
+                  className="block mb-2 text-sm font-medium text-white"
+                >
+                  Avatar URL
+                </label>
+                <input
+                  type="url"
+                  name="avatar"
+                  id="avatar"
+                  onChange={handleRegisterAvatarChange}
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="Link to avatar image"
+                />
+              </div>
+
+              {/* Background Image URL */}
+              <div>
+                <label
+                  htmlFor="bg"
+                  className="block mb-2 text-sm font-medium text-white"
+                >
+                  Background Image URL
+                </label>
+                <input
+                  type="url"
+                  name="bg"
+                  id="bg"
+                  onChange={handleRegisterBgChange}
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="Link to background image"
+                />
+              </div>
+
+              {/* About Content */}
+              <div>
+                <label
+                  htmlFor="about"
+                  className="block mb-2 text-sm font-medium text-white"
+                >
+                  About
+                </label>
+                <textarea
+                  name="about"
+                  id="about"
+                  onChange={handleRegisterAboutContentChange}
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  placeholder="Tell us about yourself"
+                />
+              </div>
+
+              {/* Password */}
               <div>
                 <label
                   htmlFor="password"
@@ -164,10 +257,12 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
                   id="password"
                   placeholder="••••••••"
                   onChange={handleRegisterPasswordChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required
                 />
               </div>
+
+              {/* Confirm Password */}
               <div>
                 <label
                   htmlFor="confirmPassword"
@@ -181,36 +276,15 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
                   id="confirmPassword"
                   placeholder="••••••••"
                   onChange={handleRegisterConfirmPasswordChange}
-                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   required
                 />
-              </div>
-              <div>
-                <label
-                  htmlFor="phone-input"
-                  className="block mb-2 text-sm font-medium text-white"
-                >
-                  Phone number
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="phone-input"
-                    aria-describedby="helper-text-explanation"
-                    className="bg-blue-200 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    placeholder="123-456-7890"
-                    required
-                    onChange={handleRegisterPhoneChange}
-                  />
-                </div>
               </div>
 
               <p className="text-red-500">{registerError}</p>
               <button
-                onClick={handleRegister}
                 type="submit"
-                className="mt-4 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none  focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 transition-transform transform active:scale-95"
+                className="mt-4 text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-800 font-medium rounded-lg px-5 py-2.5 text-center mb-2 transition-transform transform active:scale-95"
               >
                 Register
               </button>
@@ -218,7 +292,7 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
                 Already have an account?{" "}
                 <button
                   onClick={navigateLogin}
-                  className="font-medium  hover:underline text-primary-500"
+                  className="font-medium hover:underline text-primary-500"
                 >
                   Login
                 </button>

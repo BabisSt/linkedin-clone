@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @Component
 public class UsersImpl implements UsersInterface {
@@ -50,6 +53,146 @@ public class UsersImpl implements UsersInterface {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public Optional<Users> selectUserByUserId(Integer userId) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Users user = mapResultSetToUsers(rs);
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Users> selectUserByEmail(String userEmail) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");) {
+            stmt.setString(1, userEmail);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Users user = mapResultSetToUsers(rs);
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public int updateUser(Integer userId, Users user) {
+        int rowsAffected = 0;
+
+        // Fetch the current user details from the database
+        Optional<Users> currentUserOpt = selectUserByUserId(userId);
+        if (!currentUserOpt.isPresent()) {
+            return 0; // User not found
+        }
+        Users currentUser = currentUserOpt.get();
+
+        // Update the fields of currentUser with the values from the request, but only
+        // if they are present
+        if (user.getName() != null) {
+            currentUser.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            currentUser.setEmail(user.getEmail());
+        }
+        if (user.getAvatar() != null) {
+            currentUser.setAvatar(user.getAvatar());
+        }
+        if (user.getBg() != null) {
+            currentUser.setBg(user.getBg());
+        }
+        if (user.getAboutContent() != null) {
+            currentUser.setAboutContent(user.getAboutContent());
+        }
+        if (user.getUsername() != null) {
+            currentUser.setUsername(user.getUsername());
+        }
+        if (user.getPassword() != null) {
+            currentUser.setPassword(user.getPassword());
+        }
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement(
+                        "UPDATE users SET name = ?, email = ? , avatar = ?, bg= ? , about_content = ? , username = ? , password= ? WHERE id = ?");) {
+            stmt.setString(1, currentUser.getName());
+            stmt.setString(2, currentUser.getEmail());
+            stmt.setString(3, currentUser.getAvatar());
+            stmt.setString(4, currentUser.getBg());
+            stmt.setString(5, currentUser.getAboutContent());
+            stmt.setString(6, currentUser.getUsername());
+            stmt.setString(7, currentUser.getPassword());
+            stmt.setInt(8, userId);
+
+            rowsAffected = stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rowsAffected;
+    }
+
+    @Override
+    public int deleteUserByUserId(Integer userId) {
+        int rowsAffected = 0;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE id = ?");) {
+            stmt.setInt(1, userId);
+
+            rowsAffected = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rowsAffected;
+    }
+
+    public static String generateNumericId() {
+        Random random = new Random();
+        int id = 100 + random.nextInt(900); // Generates a 6-digit number
+        return String.valueOf(id);
+    }
+
+    @Override
+    public int insertUser(Users user) {
+        int rowsAffected = 0;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement(
+                        "INSERT INTO users (id, name, email, avatar, bg, about_content, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");) {
+
+            // Set the generated random ID as the first parameter
+            stmt.setString(1, generateNumericId());
+            stmt.setString(2, user.getName());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getAvatar());
+            stmt.setString(5, user.getBg());
+            stmt.setString(6, user.getAboutContent());
+            stmt.setString(7, user.getUsername());
+            stmt.setString(8, user.getPassword());
+
+            rowsAffected = stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rowsAffected;
     }
 
     @Override
