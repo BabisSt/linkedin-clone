@@ -1,14 +1,13 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
 
 interface PrivateRouteProps {
-  element: ReactElement;
+  element: JSX.Element;
 }
 
-/**
- * TODO : create logic for login
- */
-export default function PrivateRoute({ element }: PrivateRouteProps) {
-  const isAuthenticated = true;
-  return isAuthenticated ? element : <Navigate to="/404" />;
-}
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
+  const isAuthenticated = !!localStorage.getItem("user"); // Check if user is logged in
+  return isAuthenticated ? element : <Navigate to="/login" />;
+};
+
+export default PrivateRoute;

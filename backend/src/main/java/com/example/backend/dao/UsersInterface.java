@@ -11,13 +11,13 @@ public interface UsersInterface {
 
     public Users authenticateUser(String email, String password);
 
-    public Optional<Users> selectUserByUserId(Integer userId);
+    public Optional<Users> selectUserByUserId(String userId);
 
     public Optional<Users> selectUserByEmail(String userEmail);
 
-    int updateUser(Integer userId, Users user);
+    int updateUserByUserId(String userId, Users user);
 
-    int deleteUserByUserId(Integer userId);
+    int deleteUserByUserId(String userId);
 
     int insertUser(Users user);
 }

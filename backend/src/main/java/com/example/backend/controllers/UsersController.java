@@ -29,6 +29,32 @@ public class UsersController {
         this.usersImpl = usersImpl;
     }
 
+    // @PostMapping("/update")
+    // public ResponseEntity<Map<String, Object>> updateUser(@RequestBody Users
+    // user) {
+
+    // int newUserId = usersImpl.updateUserByUserId(user.getId(), user);
+    // if (newUserId > 0) {
+    // Map<String, Object> response = new HashMap<>();
+    // response.put("message", "User registered successfully");
+    // response.put("id", newUserId);
+    // return ResponseEntity.ok(response);
+    // } else {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    // }
+
+    // }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/updateUserByUserId/{Id}")
+    public ResponseEntity<String> updateUser(@PathVariable("Id") String Id, @RequestBody Users user) {
+        int result = usersImpl.updateUserByUserId(Id, user);
+        if (result > 0) {
+            return ResponseEntity.ok("User updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating User.");
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> registerUser(@RequestBody Users user) {
         // Check if the user already exists
@@ -61,7 +87,7 @@ public class UsersController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/deleteUserByUserId/{Id}")
-    public ResponseEntity<String> deleteUserByUserId(@PathVariable("Id") Integer Id) {
+    public ResponseEntity<String> deleteUserByUserId(@PathVariable("Id") String Id) {
         int result = usersImpl.deleteUserByUserId(Id);
         if (result > 0) {
             return ResponseEntity.ok("User deleted successfully.");

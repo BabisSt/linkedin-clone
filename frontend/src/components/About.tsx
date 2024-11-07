@@ -12,81 +12,98 @@ export default function About({ loggedInUser }: AboutProps) {
   const [openAboutDialog, setOpenAboutDialog] = useState(false);
 
   const [skills, setSkills] = useState<string[]>([]);
+  const [about, setAbout] = useState(loggedInUser.aboutContent);
+  const [savedMessage, setSavedMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [updateCounter, setUpdateCounter] = useState(0);
+
   useEffect(() => {
     const fetchSkills = async () => {
       try {
         const response = await fetch(
           `http://localhost:8080/skills/${loggedInUser.id}`
         );
-        const data = await response.json();
-
-        const skillsData = Array.isArray(data) ? data : [data];
-
-        const skillsArray = skillsData.reduce((acc, item) => {
-          if (item.skillName) {
-            const skills = item.skillName
-              .split(",")
-              .map((skill: string) => skill.trim());
-            return acc.concat(skills);
-          }
-          return acc;
-        }, []);
-
-        setSkills(skillsArray);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          const skillsArray = processSkillsData(data.skillName);
+          console.log(skillsArray);
+          setSkills(skillsArray);
+        } else {
+          throw new Error("Received response is neither JSON nor plain text");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching skills:", error);
       }
     };
 
     fetchSkills();
-  }, [loggedInUser.id]);
+  }, [loggedInUser]);
 
-  const [about, setAbout] = useState(loggedInUser.aboutContent);
-  const [savedMessage, setSavedMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  // Assuming skillsName is a comma-separated string
+  const processSkillsData = (data: string): string[] => {
+    // Split the string by commas and trim any leading/trailing spaces
+    const skillsArray: string[] = data.split(",").map((skill) => skill.trim());
+    return skillsArray;
+  };
+
   const toggleTopSkillsDialog = () => {
     setSavedMessage("");
     setOpenTopSkillsDialog(!openTopSkillsDialog);
   };
+
   const toggleAboutDialog = () => {
     setSavedMessage("");
     setOpenAboutDialog(!openAboutDialog);
   };
-  const handleSaveAbout = () => {
-    if (about !== loggedInUser.aboutContent) {
-      loggedInUser.aboutContent = about;
-      setSavedMessage("Successfully Saved!");
+
+  const handleSaveAbout = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/updateUserByUserId/${loggedInUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            aboutContent: about,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedUser = { ...loggedInUser, aboutContent: about };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setSavedMessage("Successfully Saved!");
+
+        // Trigger re-render by updating counter
+        setUpdateCounter((prev) => prev + 1);
+      } else {
+        console.error("Failed to save about content:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error saving about content:", error);
     }
   };
 
   const handleSaveSkills = () => {
-    //let foundEmpty = false;
     for (let i = 0; i <= skills.length; i++) {
       if (skills[i] === "") {
         setErrorMessage("Skills can't be empty!");
-        //foundEmpty = true;
         break;
       }
     }
-    // if (skills !== profileData.userProps[0].topSkills && !foundEmpty) {
-    //   profileData.userProps[0].topSkills = skills;
-    //   setSavedMessage("Successfully Saved!");
-    //   foundEmpty = false;
-    //   setErrorMessage("");
-    // }
   };
 
-  // Handler for updating individual skills
   const handleSkillChange = (index: number, value: string) => {
     const updatedSkills = [...skills];
     updatedSkills[index] = value;
     setSkills(updatedSkills);
   };
-
-  // useEffect(() => {
-  //   setAbout(loggedInUser.aboutContent);
-  //   setSkills(profileData.userProps[0].topSkills);
-  // }, [loggedInUser]);
 
   const addSkill = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -104,12 +121,15 @@ export default function About({ loggedInUser }: AboutProps) {
   };
 
   return (
-    <div className="flex justify-center items-center w-full">
+    <div
+      key={updateCounter}
+      className="flex justify-center items-center w-full"
+    >
       <div className="relative flex flex-col shadow-lg rounded-lg mx-4 max-w-lg md:max-w-4xl w-full mb-4 bg-blue-200">
         <div className="group">
           <h2 className="text-2xl font-bold text-gray-900 p-4">About</h2>
           <p className="text-sm text-gray-600 text-center text-justify px-5 py-3">
-            {loggedInUser.aboutContent}
+            {about}
           </p>
           <EditButton functionality={toggleAboutDialog} />
         </div>
@@ -117,8 +137,8 @@ export default function About({ loggedInUser }: AboutProps) {
         <div className="shadow-lg rounded-lg bg-blue-200 p-5 m-3 border border-blue-300 group">
           <EditButton functionality={toggleTopSkillsDialog} />
           <h2 className="text-xl font-bold text-gray-900">Top Skills</h2>
-          {skills.map((data) => (
-            <ul className="list-disc" key={data}>
+          {skills.map((data, index) => (
+            <ul className="list-disc" key={index}>
               <li>{data}</li>
             </ul>
           ))}
@@ -132,7 +152,7 @@ export default function About({ loggedInUser }: AboutProps) {
         >
           <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
             <textarea
-              defaultValue={loggedInUser.aboutContent}
+              defaultValue={about}
               className="bg-blue-200 w-full h-56 border border-sky-800 rounded p-2"
               onChange={(e) => setAbout(e.target.value)}
             />
@@ -164,7 +184,7 @@ export default function About({ loggedInUser }: AboutProps) {
                     onClick={() => handleDeleteSkill(index)}
                   >
                     <svg
-                      className=" cursor-pointer hover:text-gray-700 border rounded-full  h-7"
+                      className="cursor-pointer hover:text-gray-700 border rounded-full h-7"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

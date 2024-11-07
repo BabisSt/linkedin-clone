@@ -56,10 +56,10 @@ public class UsersImpl implements UsersInterface {
     }
 
     @Override
-    public Optional<Users> selectUserByUserId(Integer userId) {
+    public Optional<Users> selectUserByUserId(String userId) {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
                 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");) {
-            stmt.setInt(1, userId);
+            stmt.setString(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Users user = mapResultSetToUsers(rs);
@@ -92,7 +92,7 @@ public class UsersImpl implements UsersInterface {
     }
 
     @Override
-    public int updateUser(Integer userId, Users user) {
+    public int updateUserByUserId(String userId, Users user) {
         int rowsAffected = 0;
 
         // Fetch the current user details from the database
@@ -101,7 +101,6 @@ public class UsersImpl implements UsersInterface {
             return 0; // User not found
         }
         Users currentUser = currentUserOpt.get();
-
         // Update the fields of currentUser with the values from the request, but only
         // if they are present
         if (user.getName() != null) {
@@ -135,7 +134,7 @@ public class UsersImpl implements UsersInterface {
             stmt.setString(5, currentUser.getAboutContent());
             stmt.setString(6, currentUser.getUsername());
             stmt.setString(7, currentUser.getPassword());
-            stmt.setInt(8, userId);
+            stmt.setString(8, userId);
 
             rowsAffected = stmt.executeUpdate();
 
@@ -147,12 +146,12 @@ public class UsersImpl implements UsersInterface {
     }
 
     @Override
-    public int deleteUserByUserId(Integer userId) {
+    public int deleteUserByUserId(String userId) {
         int rowsAffected = 0;
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
                 PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE id = ?");) {
-            stmt.setInt(1, userId);
+            stmt.setString(1, userId);
 
             rowsAffected = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -222,11 +221,11 @@ public class UsersImpl implements UsersInterface {
         String email = rs.getString("email");
         String avatar = rs.getString("avatar");
         String bg = rs.getString("bg");
-        String aboutContent = rs.getString("about_content");
+        String about_content = rs.getString("about_content");
         String username = rs.getString("username");
         String password = rs.getString("password");
 
-        return new Users(id, name, email, avatar, bg, aboutContent, username, password);
+        return new Users(id, name, email, avatar, bg, about_content, username, password);
     }
 
 }

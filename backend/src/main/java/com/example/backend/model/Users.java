@@ -6,18 +6,18 @@ public class Users {
     private String email;
     private String avatar;
     private String bg;
-    private String aboutContent;
+    private String about_content;
     private String username;
     private String password;
 
-    public Users(String id, String name, String email, String avatar, String bg, String aboutContent, String username,
+    public Users(String id, String name, String email, String avatar, String bg, String about_content, String username,
             String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.avatar = avatar;
         this.bg = bg;
-        this.aboutContent = aboutContent;
+        this.about_content = about_content;
         this.username = username;
         this.password = password;
     }
@@ -43,7 +43,7 @@ public class Users {
     }
 
     public String getAboutContent() {
-        return aboutContent;
+        return about_content;
     }
 
     public String getUsername() {
@@ -70,8 +70,8 @@ public class Users {
         this.bg = bg;
     }
 
-    public void setAboutContent(String aboutContent) {
-        this.aboutContent = aboutContent;
+    public void setAboutContent(String about_content) {
+        this.about_content = about_content;
     }
 
     public void setUsername(String username) {

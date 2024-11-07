@@ -21,7 +21,7 @@ public class ExperiencesService {
         return experiencesInterface.getAllExperiences();
     }
 
-    public Experiences getExperiencesById(String id) {
-        return experiencesInterface.getExperiencesById(id);
+    public Experiences getExperiencesByUserId(String userId) {
+        return experiencesInterface.getExperiencesByUserId(userId);
     }
 }

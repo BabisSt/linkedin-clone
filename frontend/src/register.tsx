@@ -77,7 +77,6 @@ export default function Register({ setShowNavFooter }: RegisterProps) {
       setRegisterError("Passwords must match.");
       return;
     }
-
     try {
       const response = await fetch("http://localhost:8080/register", {
         method: "POST",

@@ -24,15 +24,15 @@ public class UsersService {
         return usersInterface.getUserById(id);
     }
 
-    public Optional<Users> getUser(Integer userId) {
+    public Optional<Users> getUser(String userId) {
         return usersInterface.selectUserByUserId(userId);
     }
 
-    public int updateUser(Integer userId, Users user) {
-        return usersInterface.updateUser(userId, user);
+    public int updateUser(String userId, Users user) {
+        return usersInterface.updateUserByUserId(userId, user);
     }
 
-    public int removeUser(Integer userId) {
+    public int removeUser(String userId) {
         Optional<Users> optionalUser = getUser(userId);
         if (optionalUser.isPresent()) {
             usersInterface.deleteUserByUserId(userId);

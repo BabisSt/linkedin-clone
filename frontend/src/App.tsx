@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import WelcomePage from "./welcomePage";
 import Login from "./login";
@@ -85,69 +85,72 @@ export default function App() {
 
   const [appData, setAppData] = useState<AppData[] | null>(null);
 
+  const location = useLocation();
+
+  // Update `showNavFooter` based on the current path
+  useEffect(() => {
+    setShowNavFooter(location.pathname !== "/");
+  }, [location]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:8080/users");
         if (!response.ok) throw new Error("Failed to fetch data");
         const data: AppData[] = await response.json();
-
         setAppData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
   return (
     <div className="app-container">
-      <BrowserRouter>
-        {appData && (
-          <ProfileContext.Provider value={appData}>
-            {showNavFooter && <NavBar setShowNavFooter={setShowNavFooter} />}
-            <div className="content">
-              <Routes>
-                <Route
-                  path="/"
-                  element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
-                />
-                <Route
-                  path="/profile"
-                  element={<PrivateRoute element={<MyProfile />} />}
-                />
-                <Route path="/profile/:userName" element={<Profile />} />
-                <Route
-                  path="/login"
-                  element={<Login setShowNavFooter={setShowNavFooter} />}
-                />
-                <Route
-                  path="/register"
-                  element={<Register setShowNavFooter={setShowNavFooter} />}
-                />
-                <Route
-                  path="/404"
-                  element={<Unauthorized setShowNavFooter={setShowNavFooter} />}
-                />
-                <Route
-                  path="/home"
-                  element={<PrivateRoute element={<Home />} />}
-                />
-                <Route
-                  path="/network"
-                  element={<PrivateRoute element={<Network />} />}
-                />
-                <Route
-                  path="/jobs"
-                  element={<PrivateRoute element={<Jobs />} />}
-                />
-              </Routes>
-            </div>
-            {showNavFooter && <Footer />}
-          </ProfileContext.Provider>
-        )}
-      </BrowserRouter>
+      {appData && (
+        <ProfileContext.Provider value={appData}>
+          {showNavFooter && <NavBar setShowNavFooter={setShowNavFooter} />}
+          <div className="content">
+            <Routes>
+              <Route
+                path="/"
+                element={<WelcomePage setShowNavFooter={setShowNavFooter} />}
+              />
+              <Route
+                path="/profile"
+                element={<PrivateRoute element={<MyProfile />} />}
+              />
+              <Route path="/profile/:userName" element={<Profile />} />
+              <Route
+                path="/login"
+                element={<Login setShowNavFooter={setShowNavFooter} />}
+              />
+              <Route
+                path="/register"
+                element={<Register setShowNavFooter={setShowNavFooter} />}
+              />
+              <Route
+                path="/404"
+                element={<Unauthorized setShowNavFooter={setShowNavFooter} />}
+              />
+              <Route
+                path="/home"
+                element={<PrivateRoute element={<Home />} />}
+              />
+              <Route
+                path="/network"
+                element={<PrivateRoute element={<Network />} />}
+              />
+              <Route
+                path="/jobs"
+                element={<PrivateRoute element={<Jobs />} />}
+              />
+            </Routes>
+          </div>
+          {showNavFooter && <Footer />}
+        </ProfileContext.Provider>
+      )}
     </div>
   );
 }

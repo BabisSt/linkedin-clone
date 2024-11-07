@@ -6,6 +6,6 @@ import java.util.List;
 public interface SkillsInterface {
     List<Skills> getAllSkills();
 
-    Skills getSkillsById(String id);
+    Skills getSkillsByUserId(String userId);
 
 }

@@ -92,10 +92,10 @@ public class BackendApplication {
 		return experiencesService.getAllExperiences();
 	}
 
-	@GetMapping("/experiences/{id}")
+	@GetMapping("/experiences/{userId}")
 	@ResponseBody
-	public Experiences fetchExperiencesById(@PathVariable String id) {
-		return experiencesService.getExperiencesById(id);
+	public Experiences fetchExperiencesByUserId(@PathVariable String userId) {
+		return experiencesService.getExperiencesByUserId(userId);
 	}
 
 	@GetMapping("/skills")
@@ -104,10 +104,10 @@ public class BackendApplication {
 		return skillsService.getAllSkills();
 	}
 
-	@GetMapping("/skills/{id}")
+	@GetMapping("/skills/{userId}")
 	@ResponseBody
-	public Skills fetchSkillsById(@PathVariable String id) {
-		return skillsService.getSkillsById(id);
+	public Skills fetchSkillsByUserId(@PathVariable String userId) {
+		return skillsService.getSkillsByUserId(userId);
 	}
 
 	@GetMapping("/jobs")

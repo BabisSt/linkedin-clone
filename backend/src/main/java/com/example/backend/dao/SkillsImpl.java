@@ -35,11 +35,11 @@ public class SkillsImpl implements SkillsInterface {
     }
 
     @Override
-    public Skills getSkillsById(String id) {
+    public Skills getSkillsByUserId(String userId) {
         Skills skills = null;
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Skills WHERE id = ?")) {
-            stmt.setString(1, id);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Skills WHERE user_id = ?")) {
+            stmt.setString(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     skills = mapResultSetToSkills(rs);

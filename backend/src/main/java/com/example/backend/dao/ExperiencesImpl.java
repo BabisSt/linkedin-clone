@@ -34,11 +34,11 @@ public class ExperiencesImpl implements ExperiencesInterface {
     }
 
     @Override
-    public Experiences getExperiencesById(String id) {
+    public Experiences getExperiencesByUserId(String userId) {
         Experiences experiences = null;
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Experiences WHERE id = ?")) {
-            stmt.setString(1, id);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Experiences WHERE user_id = ?")) {
+            stmt.setString(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     experiences = mapResultSetToExperiences(rs);

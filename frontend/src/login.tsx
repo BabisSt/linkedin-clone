@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import logo from "/LinkedIn_logo_.png";
 import { useNavigate } from "react-router-dom";
+import logo from "/LinkedIn_logo_.png";
 
 interface LoginProps {
   setShowNavFooter: (value: boolean) => void;
@@ -8,7 +8,6 @@ interface LoginProps {
 
 export default function Login({ setShowNavFooter }: LoginProps) {
   const navigate = useNavigate();
-
   const [LoginEmail, setLoginEmail] = useState("");
   const [LoginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -38,18 +37,14 @@ export default function Login({ setShowNavFooter }: LoginProps) {
     try {
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: LoginEmail, password: LoginPassword }),
       });
 
       if (response.ok) {
         const userData = await response.json();
-
-        localStorage.setItem("user", JSON.stringify(userData)); // Store as JSON string
-        setShowNavFooter(true);
-        console.log("userData" + userData.bg);
+        localStorage.setItem("user", JSON.stringify(userData)); // Store user data in localStorage
+        setShowNavFooter(true); // Show nav/footer after login
         navigate("/home");
       } else {
         setLoginError("Login failed. Please check your credentials.");
@@ -61,7 +56,7 @@ export default function Login({ setShowNavFooter }: LoginProps) {
   };
 
   useEffect(() => {
-    setShowNavFooter(false);
+    setShowNavFooter(false); // Hide nav/footer on the login page
   }, [setShowNavFooter]);
 
   const navigateRegister = (event: React.MouseEvent<HTMLButtonElement>) => {

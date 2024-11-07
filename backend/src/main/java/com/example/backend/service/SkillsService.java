@@ -21,7 +21,7 @@ public class SkillsService {
         return skillsInterface.getAllSkills();
     }
 
-    public Skills getSkillsById(String id) {
-        return skillsInterface.getSkillsById(id);
+    public Skills getSkillsByUserId(String userId) {
+        return skillsInterface.getSkillsByUserId(userId);
     }
 }
