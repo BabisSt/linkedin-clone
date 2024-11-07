@@ -122,7 +122,6 @@ export default function Login({ setShowNavFooter }: LoginProps) {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border rounded bg-gray-700 border-gray-600 focus:ring-primary-600 ring-offset-gray-800"
-                      required
                     />
                   </div>
                   <div className="ml-3 text-sm">

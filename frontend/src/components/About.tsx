@@ -43,13 +43,56 @@ export default function About({ loggedInUser }: AboutProps) {
     fetchSkills();
   }, [loggedInUser]);
 
-  // Assuming skillsName is a comma-separated string
   const processSkillsData = (data: string): string[] => {
-    // Split the string by commas and trim any leading/trailing spaces
     const skillsArray: string[] = data.split(",").map((skill) => skill.trim());
     return skillsArray;
   };
 
+  const handleSkillChange = (index: number, value: string) => {
+    const updatedSkills = [...skills];
+    updatedSkills[index] = value;
+    setSkills(updatedSkills);
+    setErrorMessage("");
+  };
+
+  const addSkill = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setSavedMessage("");
+
+    const updatedSkills = [...skills];
+    updatedSkills[skills.length++] = "";
+    setSkills(updatedSkills);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/insertSkillByUserId/${loggedInUser.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            skillName: updatedSkills.join(", "),
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedSkills = { ...loggedInUser, skillName: skills.join(", ") };
+        localStorage.setItem("skills", JSON.stringify(updatedSkills));
+      } else {
+        setErrorMessage("Failed to save skills");
+      }
+    } catch (error) {
+      console.error("Error saving skills:", error);
+    }
+  };
+
+  const handleDeleteSkill = (index: number) => {
+    const updatedSkills = [...skills];
+    updatedSkills.splice(index, 1);
+    setSkills(updatedSkills);
+  };
   const toggleTopSkillsDialog = () => {
     setSavedMessage("");
     setOpenTopSkillsDialog(!openTopSkillsDialog);
@@ -58,6 +101,41 @@ export default function About({ loggedInUser }: AboutProps) {
   const toggleAboutDialog = () => {
     setSavedMessage("");
     setOpenAboutDialog(!openAboutDialog);
+  };
+
+  const handleSaveSkills = async () => {
+    if (skills.some((skill) => skill.trim() === "")) {
+      setErrorMessage("All skill fields must be filled out before saving.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/updateSkillByUserId/${loggedInUser.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            skillName: skills.join(", "),
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedSkills = { ...loggedInUser, skillName: skills.join(", ") };
+        localStorage.setItem("skills", JSON.stringify(updatedSkills));
+        setSavedMessage("Skills successfully saved!");
+        setErrorMessage("");
+        setUpdateCounter((prev) => prev + 1); // Trigger re-render
+      } else {
+        setErrorMessage("Failed to save skills");
+      }
+    } catch (error) {
+      console.error("Error saving skills:", error);
+      setErrorMessage("An error occurred while saving skills.");
+    }
   };
 
   const handleSaveAbout = async () => {
@@ -88,36 +166,6 @@ export default function About({ loggedInUser }: AboutProps) {
     } catch (error) {
       console.error("Error saving about content:", error);
     }
-  };
-
-  const handleSaveSkills = () => {
-    for (let i = 0; i <= skills.length; i++) {
-      if (skills[i] === "") {
-        setErrorMessage("Skills can't be empty!");
-        break;
-      }
-    }
-  };
-
-  const handleSkillChange = (index: number, value: string) => {
-    const updatedSkills = [...skills];
-    updatedSkills[index] = value;
-    setSkills(updatedSkills);
-  };
-
-  const addSkill = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setSavedMessage("");
-
-    const updatedSkills = [...skills];
-    updatedSkills[skills.length++] = "";
-    setSkills(updatedSkills);
-  };
-
-  const handleDeleteSkill = (index: number) => {
-    const updatedSkills = [...skills];
-    updatedSkills.splice(index, 1);
-    setSkills(updatedSkills);
   };
 
   return (

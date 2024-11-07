@@ -25,4 +25,7 @@ public class Skills {
         return userId;
     }
 
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
 }
