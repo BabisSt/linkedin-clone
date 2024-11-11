@@ -94,7 +94,7 @@ public class BackendApplication {
 
 	@GetMapping("/experiences/{userId}")
 	@ResponseBody
-	public Experiences fetchExperiencesByUserId(@PathVariable String userId) {
+	public List<Experiences> fetchExperiencesByUserId(@PathVariable String userId) {
 		return experiencesService.getExperiencesByUserId(userId);
 	}
 

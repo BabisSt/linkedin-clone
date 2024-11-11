@@ -30,7 +30,6 @@ export default function About({ loggedInUser }: AboutProps) {
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
           const skillsArray = processSkillsData(data.skillName);
-          console.log(skillsArray);
           setSkills(skillsArray);
         } else {
           throw new Error("Received response is neither JSON nor plain text");

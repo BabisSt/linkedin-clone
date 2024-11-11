@@ -30,10 +30,10 @@ export default function ExperiencePage({ loggedInUser }: ExperiencePageProps) {
         const experiencesArray = Array.isArray(data) ? data : [data];
 
         setAllExperience(experiencesArray);
-        console.log(experiencesArray);
+        console.log(data);
       } catch (error) {
         console.error("Failed to fetch experiences:", error);
-        setAllExperience([]); // Set to an empty array in case of error
+        setAllExperience([]);
       }
     };
 
@@ -88,14 +88,31 @@ export default function ExperiencePage({ loggedInUser }: ExperiencePageProps) {
     }
   };
 
-  const handleDeleteExperience = (index: string) => {
-    setAllExperience((allExperience) => {
-      return allExperience.filter((experience) => experience.id !== index);
-    });
-    setOpenExperienceDialog(false);
+  const handleDeleteExperience = async (index: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/deleteExperienceByUserId/${loggedInUser.id}/${index}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        setAllExperience((prevExperiences) =>
+          prevExperiences.filter((experience) => experience.id !== index)
+        );
+        setOpenExperienceDialog(false);
+        setSavedMessage("Experience deleted successfully.");
+      } else {
+        setErrorMessage("Failed to delete experience.");
+      }
+    } catch (error) {
+      console.error("Error deleting experience:", error);
+      setErrorMessage("An error occurred while deleting the experience.");
+    }
   };
 
-  const handleSaveExperience = () => {
+  const handleSaveExperience = async () => {
     if (!experience) return;
 
     let foundEmpty = false;
@@ -116,30 +133,42 @@ export default function ExperiencePage({ loggedInUser }: ExperiencePageProps) {
       foundEmpty = true;
     }
 
-    if (!foundEmpty) {
-      const updatedExperiences = [...allExperience];
-      const index = updatedExperiences.findIndex(
-        (exp) => exp.id === experience?.id
+    if (foundEmpty) return;
+
+    const experienceData = {
+      ...experience,
+      duration: `${startDate?.toLocaleDateString()} - ${endDate?.toLocaleDateString()}`,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/${isNewExperience ? "insertExperienceByUserId" : "updateExperienceByUserId"}/${loggedInUser.id}`,
+        {
+          method: isNewExperience ? "POST" : "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(experienceData),
+        }
       );
 
-      if (index === -1) {
-        updatedExperiences.push({
-          ...experience,
-          duration: `${startDate?.toLocaleDateString()} - ${endDate?.toLocaleDateString()}`,
-        });
+      if (response.ok) {
+        setAllExperience((prev) =>
+          isNewExperience
+            ? [...prev, experienceData]
+            : prev.map((exp) =>
+                exp.id === experience.id ? experienceData : exp
+              )
+        );
+        setSavedMessage("Experience successfully saved!");
+        setErrorMessage("");
+        setOpenExperienceDialog(false);
       } else {
-        updatedExperiences[index] = {
-          ...experience,
-          duration: `${startDate?.toLocaleDateString()} - ${endDate?.toLocaleDateString()}`,
-        };
+        setErrorMessage("Failed to save experience.");
       }
-
-      setAllExperience(updatedExperiences);
-      setSavedMessage("Successfully Saved!");
-      setErrorMessage("");
-      // allExperience = updatedExperiences;
-
-      setOpenExperienceDialog(false);
+    } catch (error) {
+      console.error("Error saving experience:", error);
+      setErrorMessage("An error occurred while saving the experience.");
     }
   };
 
