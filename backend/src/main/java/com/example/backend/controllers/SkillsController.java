@@ -1,6 +1,5 @@
 package com.example.backend.controllers;
 
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dao.SkillsImpl;
-import com.example.backend.dao.UsersImpl;
 import com.example.backend.model.Skills;
-import com.example.backend.model.Users;
 import com.example.backend.service.SkillsService;
 
 @RestController

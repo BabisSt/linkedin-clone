@@ -33,39 +33,23 @@ public class PostsImpl implements PostsInterface {
         return posts;
     }
 
-    // @Override
-    // public int updateSave(String save, String id) {
-    // String sql = "UPDATE jobs SET save = ? WHERE id = ?";
-    // try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME,
-    // DB_PASSWORD);
-    // PreparedStatement stmt = conn.prepareStatement(sql)) {
-    // stmt.setString(1, save);
-    // stmt.setString(2, id);
-    // return stmt.executeUpdate();
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // return 0;
-    // }
-    // }
+    @Override
+    public int updateLikesByPostId(String postId, boolean increment) {
+        String updateQuery = "UPDATE Posts SET likes = likes + ? WHERE id = ?";
+        int rowsAffected = 0;
 
-    // @Override
-    // public Jobs getJobById(String id) {
-    // Jobs job = null;
-    // try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME,
-    // DB_PASSWORD);
-    // PreparedStatement stmt = conn.prepareStatement("SELECT * FROM jobs WHERE id =
-    // ?")) {
-    // stmt.setString(1, id);
-    // try (ResultSet rs = stmt.executeQuery()) {
-    // if (rs.next()) {
-    // job = mapResultSetToJobs(rs);
-    // }
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // }
-    // return job;
-    // }
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+            stmt.setInt(1, increment ? 1 : -1);
+            stmt.setString(2, postId);
+
+            rowsAffected = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rowsAffected;
+    }
 
     private Posts mapResultSetToPosts(ResultSet rs) throws SQLException {
 

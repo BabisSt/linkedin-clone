@@ -18,4 +18,8 @@ public class CommentsService {
     public List<Comments> getAllComments() {
         return commentsInterface.getAllComments();
     }
+
+    public List<Comments> getCommentsByPostId(String postId) {
+        return commentsInterface.getCommentsByPostId(postId);
+    }
 }

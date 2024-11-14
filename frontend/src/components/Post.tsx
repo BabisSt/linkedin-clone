@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogBody } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import CommentsSection from "./CommentsSection";
 import { Comment } from "../App";
-
-/**
- * TODO: take post data from backend-api
- */
 
 interface postDataProps {
   id: string;
@@ -14,26 +10,30 @@ interface postDataProps {
   avatar: string;
   postTime: string;
   content: string;
-  likes: string;
+  likes: number;
   numberOfComments: string;
   photo?: string;
   comments: Comment[];
 }
 
 export default function Post({
+  id,
   name,
   avatar,
   postTime,
   content,
-  likes,
+  likes: initialLikes,
   numberOfComments,
   photo,
-  comments,
 }: postDataProps) {
   const [openDial, setOpenDial] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(Number(initialLikes));
   const [openComments, setOpenComments] = useState(false);
+  const [fetchedComments, setFetchedComments] = useState<Comment[]>([]);
+
   const navigate = useNavigate();
+
   const handlePhotoClick = () => {
     setOpenDial(!openDial);
   };
@@ -42,17 +42,62 @@ export default function Post({
     setOpenDial(false);
   };
 
-  const handleLiked = () => {
-    setLiked(!liked);
+  const handleLiked = async () => {
+    const isLiked = !liked;
+    setLiked(isLiked);
+
+    const newLikes = isLiked ? Number(likes) + 1 : Number(likes) - 1;
+    setLikes(newLikes);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/updateLikesByPostId/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(isLiked),
+        }
+      );
+
+      if (!response.ok) {
+        setLikes(likes);
+        console.error("Failed to update likes on the server.");
+      }
+    } catch (error) {
+      console.error("Error updating likes:", error);
+      setLikes(likes);
+    }
   };
 
   const navigateToUser = (name: string) => {
     navigate("/profile" + `/${name}`);
   };
 
-  const toggleComments = () => {
+  const toggleComments = async () => {
     setOpenComments(!openComments);
   };
+
+  // Fetch comments when the component mounts
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/getCommentsByPostId/${id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch comments");
+        }
+        const data: Comment[] = await response.json();
+        setFetchedComments(data); // Populate state with fetched comments
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [id]); // Run this effect only when `postId` changes
   return (
     <div className="flex">
       <div className="flex shadow-lg rounded-lg mx-4 md:mx-auto max-w-lg md:max-w-4xl bg-blue-200 w-full mb-4">
@@ -96,7 +141,6 @@ export default function Post({
               className="fixed inset-0 opacity-50 backdrop-blur-md"
               onClick={handleClose}
             />
-
             <DialogBody
               className="flex items-center justify-center p-0 bg-transparent"
               onClick={(e) => e.stopPropagation()}
@@ -171,12 +215,7 @@ export default function Post({
               <span>share</span>
             </div>
           </div>
-          {openComments && (
-            <CommentsSection
-              numberOfComments={numberOfComments}
-              comments={comments}
-            />
-          )}
+          {openComments && <CommentsSection comments={fetchedComments} />}
         </div>
       </div>
     </div>

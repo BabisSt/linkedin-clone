@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface CommentsInterface {
     List<Comments> getAllComments();
+
+    List<Comments> getCommentsByPostId(String postId);
 }

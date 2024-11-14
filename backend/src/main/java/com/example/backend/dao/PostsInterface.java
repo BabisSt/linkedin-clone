@@ -6,7 +6,6 @@ import java.util.List;
 public interface PostsInterface {
     List<Posts> getAllPosts();
 
-    // int updateSave(String save, String index);
+    int updateLikesByPostId(String postId, boolean increment);
 
-    // Posts getPostById(String id);
 }

@@ -2,6 +2,7 @@ package com.example.backend.dao;
 
 import org.springframework.stereotype.Component;
 import com.example.backend.model.Comments;
+import com.example.backend.model.Experiences;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,6 +32,25 @@ public class CommentsImpl implements CommentsInterface {
         }
 
         return comments;
+    }
+
+    @Override
+    public List<Comments> getCommentsByPostId(String postId) {
+        List<Comments> commentsList = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments WHERE post_id = ?")) {
+
+            stmt.setString(1, postId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Comments comment = mapResultSetToComments(rs);
+                    commentsList.add(comment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return commentsList;
     }
 
     private Comments mapResultSetToComments(ResultSet rs) throws SQLException {
