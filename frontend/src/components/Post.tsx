@@ -7,10 +7,11 @@ import { Comment } from "../App";
 interface postDataProps {
   id: string;
   name: string;
+  title: string;
   avatar: string;
   postTime: string;
   content: string;
-  likes: number;
+  likes: string;
   numberOfComments: string;
   photo?: string;
   comments: Comment[];
@@ -19,6 +20,7 @@ interface postDataProps {
 export default function Post({
   id,
   name,
+  title,
   avatar,
   postTime,
   content,
@@ -79,7 +81,6 @@ export default function Post({
     setOpenComments(!openComments);
   };
 
-  // Fetch comments when the component mounts
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -90,14 +91,14 @@ export default function Post({
           throw new Error("Failed to fetch comments");
         }
         const data: Comment[] = await response.json();
-        setFetchedComments(data); // Populate state with fetched comments
+        setFetchedComments(data);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
     };
 
     fetchComments();
-  }, [id]); // Run this effect only when `postId` changes
+  }, [id]);
   return (
     <div className="flex">
       <div className="flex shadow-lg rounded-lg mx-4 md:mx-auto max-w-lg md:max-w-4xl bg-blue-200 w-full mb-4">
@@ -120,6 +121,11 @@ export default function Post({
                 {postTime}
               </small>
             </div>
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center w-full">
+            <h2 className="text-lg font-semibold text-gray-900 break-words max-w-full">
+              {title}
+            </h2>
           </div>
           <button onClick={handlePhotoClick} className="mt-4 w-full">
             <img
@@ -215,7 +221,9 @@ export default function Post({
               <span>share</span>
             </div>
           </div>
-          {openComments && <CommentsSection comments={fetchedComments} />}
+          {openComments && (
+            <CommentsSection postId={id} comments={fetchedComments} />
+          )}
         </div>
       </div>
     </div>

@@ -6,7 +6,6 @@ import { PostProps } from "./App";
 
 /**
  *
- * TODO : grab post from backend-api and map them
  * To accept props as Object type I have to deconstruct the types of the object
  * and then accept this interface as array
  */
@@ -102,6 +101,7 @@ export default function Home() {
           <div key={data.id}>
             <Post
               id={data.id}
+              title={data.title}
               name={data.postedBy}
               avatar={data.postedByAvatar}
               postTime={data.postTime}

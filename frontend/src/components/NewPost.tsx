@@ -1,11 +1,32 @@
 import React, { useState, ChangeEvent } from "react";
 import GenericDialog from "./GenericDialog";
+import { PostProps } from "../App";
 
 export default function Post() {
   const [openDial, setOpenDial] = useState(false);
   const [postPhoto, setPostPhoto] = useState("");
   const [postText, setPostText] = useState("");
   const [postTitle, setPostTitle] = useState("");
+  const [post, setPost] = useState<PostProps | null>(null);
+  const [savedMessage, setSavedMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const getLoggedInUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser);
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  };
+
+  const loggedInUser = getLoggedInUser();
 
   const handleOpenThoughts = () => {
     setOpenDial(!openDial);
@@ -29,8 +50,76 @@ export default function Post() {
     }
   };
 
-  const handlePost = () => {
-    console.log(postText + " " + postTitle);
+  const handlePost = async () => {
+    // Ensure user is logged in
+    if (!loggedInUser) {
+      setErrorMessage("You must be logged in to create a post.");
+      return;
+    }
+
+    // Validate input fields
+    if (!postTitle.trim() || !postText.trim()) {
+      setErrorMessage("Both title and content are required.");
+      return;
+    }
+
+    const formatDate = () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
+
+    const postData: PostProps = {
+      title: postTitle.trim(),
+      content: postText.trim(),
+      photo: postPhoto || undefined,
+      id: "",
+      postTime: formatDate(),
+      postedBy: loggedInUser.name,
+      postedByAvatar: loggedInUser.avatar,
+      likes: "0",
+      numberOfComments: "0",
+      comments: [],
+    };
+
+    try {
+      // Send post data to backend
+      const response = await fetch(
+        `http://localhost:8080/insertPostByUserId/${loggedInUser.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }
+      );
+
+      if (response.ok) {
+        setSavedMessage("Post saved successfully!");
+
+        // Reset state
+        setPostPhoto("");
+        setPostText("");
+        setPostTitle("");
+        setOpenDial(false);
+
+        const savedPosts = JSON.parse(localStorage.getItem("posts") || "[]");
+        savedPosts.push(postData);
+        localStorage.setItem("posts", JSON.stringify(savedPosts));
+      } else {
+        setErrorMessage("Failed to save the post. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error saving post:", error);
+      setErrorMessage("An error occurred while saving the post.");
+    }
   };
 
   return (

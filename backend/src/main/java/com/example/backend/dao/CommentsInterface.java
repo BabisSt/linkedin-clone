@@ -7,4 +7,8 @@ public interface CommentsInterface {
     List<Comments> getAllComments();
 
     List<Comments> getCommentsByPostId(String postId);
+
+    int insertCommentByPostId(String postId, Comments comment, String userId);
+
+    int deleteComment(String commentId);
 }

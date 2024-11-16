@@ -7,14 +7,17 @@ public class Comments {
     private String datePosted;
     private String content;
     private String postId;
+    private String userId;
 
-    public Comments(String id, String avatar, String name, String datePosted, String content, String postId) {
+    public Comments(String id, String avatar, String name, String datePosted, String content, String postId,
+            String userId) {
         this.id = id;
         this.avatar = avatar;
         this.name = name;
         this.datePosted = datePosted;
         this.content = content;
         this.postId = postId;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -39,6 +42,10 @@ public class Comments {
 
     public String getPostId() {
         return postId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
 }

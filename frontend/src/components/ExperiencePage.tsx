@@ -172,10 +172,6 @@ export default function ExperiencePage({ loggedInUser }: ExperiencePageProps) {
     }
   };
 
-  // useEffect(() => {
-  //   setAllExperience(profileData.userProps[0]?.experience || []);
-  // }, []);
-
   return (
     <div className="flex justify-center items-center w-full">
       <div className="relative flex flex-col shadow-lg rounded-lg mx-4 max-w-lg md:max-w-4xl w-full mb-4 bg-blue-200">

@@ -8,4 +8,7 @@ public interface PostsInterface {
 
     int updateLikesByPostId(String postId, boolean increment);
 
+    int deletePostByUserId(String userId, String postId);
+
+    int insertPostByUserId(String userId, Posts post);
 }

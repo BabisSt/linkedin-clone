@@ -3,10 +3,6 @@ import About from "./components/About";
 import ProfileHeader from "./components/ProfilHeader";
 import ExperiencePage from "./components/ExperiencePage";
 
-/**
- * TODO: Add title to the data
- */
-
 export default function MyProfile() {
   const getLoggedInUser = () => {
     const storedUser = localStorage.getItem("user");

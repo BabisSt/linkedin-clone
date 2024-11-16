@@ -18,13 +18,14 @@ import Network from "./network";
 
 export interface PostProps {
   id: string;
+  title: string;
   postTime: string;
   postedBy: string;
   postedByAvatar: string;
   content: string;
   likes: string;
   numberOfComments: string;
-  photo: string;
+  photo?: string;
   comments: Comment[];
 }
 
@@ -34,6 +35,8 @@ export interface Comment {
   name: string;
   datePosted: string;
   content: string;
+  postId: string;
+  userId: string;
 }
 
 export interface Experience {

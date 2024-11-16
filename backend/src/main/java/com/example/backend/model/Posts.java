@@ -10,6 +10,7 @@ public class Posts {
     private String numberOfComments;
     private String photo;
     private String userId;
+    private String title;
 
     public Posts(String id, String postTime,
             String postedBy,
@@ -18,7 +19,8 @@ public class Posts {
             String likes,
             String numberOfComments,
             String photo,
-            String userId) {
+            String userId,
+            String title) {
         this.id = id;
         this.postTime = postTime;
         this.postedBy = postedBy;
@@ -28,6 +30,7 @@ public class Posts {
         this.numberOfComments = numberOfComments;
         this.photo = photo;
         this.userId = userId;
+        this.title = title;
     }
 
     public String getId() {
@@ -64,6 +67,10 @@ public class Posts {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
 }
