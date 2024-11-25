@@ -1,10 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import GenericDialog from "./components/GenericDialog";
-import { useProfileContext } from "./context";
 
-/**
- * TODO: Connect apply to job with user,store userid to job
- */
 interface Job {
   id: string;
   title: string;
@@ -17,7 +13,6 @@ interface Job {
 }
 
 export default function Jobs() {
-  const userInfo = useProfileContext();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(
     null
@@ -79,6 +74,23 @@ export default function Jobs() {
       console.error(error);
     }
   };
+
+  const getLoggedInUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser); // Parse JSON safely
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  };
+
+  const loggedInUser = getLoggedInUser();
 
   // Access backend
 
@@ -207,16 +219,16 @@ export default function Jobs() {
           <div className="flex flex-col md:flex-row bg-blue-200 rounded m-2 p-3  items-center">
             <img
               className="w-20 h-20 mb-4 rounded-full shadow-md object-cover"
-              src={userInfo.userProps[0].avatar}
+              src={loggedInUser.avatar}
               alt="User Avatar"
             />
 
             <div className="text-center md:text-left md:ml-4">
               <h5 className="text-lg font-semibold text-black">
-                {userInfo.userProps[0].name}
+                {loggedInUser.name}
               </h5>
               <span className="block text-sm text-sky-500 mt-2">
-                {userInfo.userProps[0].email}
+                {loggedInUser.email}
               </span>
             </div>
           </div>

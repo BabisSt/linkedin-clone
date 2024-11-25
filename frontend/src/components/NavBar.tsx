@@ -29,7 +29,7 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
     }
   };
 
-  let loggedInUser = getLoggedInUser();
+  const loggedInUser = getLoggedInUser();
 
   const routeHome = () => {
     navigate("/home");
@@ -70,9 +70,9 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
-
+  console.log(loggedInUser);
+  const avatar = loggedInUser.avatar;
   useEffect(() => {
-    loggedInUser = getLoggedInUser();
     const handleClickOutside = (event: MouseEvent) => {
       if (
         userMenuRef.current &&
@@ -86,8 +86,6 @@ export default function NavBar({ setShowNavFooter }: NavBarProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const avatar = loggedInUser.avatar;
 
   const getButtonClass = (path: string) =>
     location.pathname === path

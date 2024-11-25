@@ -7,7 +7,6 @@ export default function Post() {
   const [postPhoto, setPostPhoto] = useState("");
   const [postText, setPostText] = useState("");
   const [postTitle, setPostTitle] = useState("");
-  const [post, setPost] = useState<PostProps | null>(null);
   const [savedMessage, setSavedMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -42,12 +41,6 @@ export default function Post() {
 
   const handlePostText = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setPostText(event.target.value);
-  };
-
-  const handlePostPhoto = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files !== null) {
-      setPostPhoto(URL.createObjectURL(event.target.files[0]));
-    }
   };
 
   const handlePost = async () => {
@@ -159,10 +152,11 @@ export default function Post() {
 
             {postPhoto && (
               <div className="relative w-full max-w-[100%]">
-                <img
+                {/* <img
                   src={postPhoto}
-                  className="rounded-lg w-full h-auto object-cover max-h-60 border border-blue-200 "
-                />
+                  className="rounded-lg w-full h-auto object-cover max-h-60 border border-blue-200"
+                  alt="Post Preview"
+                /> */}
                 <button
                   onClick={() => setPostPhoto("")}
                   className="absolute top-2 right-2 p-1"
@@ -185,33 +179,17 @@ export default function Post() {
             )}
 
             <div className="icons flex text-gray-500 m-2">
-              <label
-                className="block mb-2 text-sm font-medium text-white cursor-pointer"
-                htmlFor="file_input"
-              >
-                <svg
-                  className="mr-2 cursor-pointer hover:text-gray-700 border border-sky-800 rounded-full p-1 h-7 hover:bg-sky-800 hover:border-blue-200 stroke-sky-800 hover:stroke-blue-200"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                  />
-                </svg>
-              </label>
-
               <input
-                className="hidden"
-                id="file_input"
-                type="file"
-                accept=".png,.jpg,.jpeg,.gif"
-                onChange={handlePostPhoto}
+                type="text"
+                className="rounded-lg bg-blue-200 border border-blue-200 p-2 outline-none w-full"
+                placeholder="Paste image URL here"
+                value={postPhoto}
+                onChange={(e) => setPostPhoto(e.target.value)}
               />
             </div>
+
+            {errorMessage}
+            {savedMessage}
           </div>
         </GenericDialog>
       </div>

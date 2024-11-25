@@ -40,25 +40,69 @@ export default function Network() {
     setButtonTexts(updatedButtonTexts);
   };
 
+  const getLoggedInUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser); // Parse JSON safely
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return null;
+    }
+  };
+
+  const loggedInUser = getLoggedInUser();
+
+  const navigateProfile = () => {
+    navigate("/profile");
+  };
+
+  const routeNetwork = () => {
+    navigate("/network");
+  };
+
+  const routeJobs = () => {
+    navigate("/jobs");
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 gap-4">
-      <div className="md:sticky md:top-20 shadow-lg rounded-lg bg-blue-200 h-72 p-4 m-4 md:col-span-3 lg:col-start-2 lg:col-end-4">
-        <h2 className="text-lg font-semibold text-gray-900 break-words max-w-full mb-6">
-          Manage my network
-        </h2>
+      <div className="md:sticky md:top-20 shadow-md rounded-xl bg-blue-200 h-96 p-6 m-4 md:col-span-3 lg:col-start-2 lg:col-end-4 flex flex-col items-center">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">About You</h2>
 
-        <ul className="space-y-4">
-          <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
-            <span className="font-medium">Connections</span>
+        <button onClick={navigateProfile}>
+          <img
+            className="w-20 h-20 mb-4 rounded-full shadow-md object-cover"
+            src={loggedInUser.avatar}
+            alt="User Avatar"
+          />
+        </button>
+
+        <button onClick={navigateProfile}>
+          <h5 className="text-lg font-semibold text-gray-700">
+            {loggedInUser.name}
+          </h5>
+        </button>
+
+        <span className="block text-sm text-gray-500 mt-2">
+          {loggedInUser.email}
+        </span>
+
+        <ul className="space-y-4 mt-4 w-full ">
+          <li
+            onClick={routeNetwork}
+            className=" rounded p-2 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer"
+          >
+            <span className="font-medium">Network</span>
           </li>
-          <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
-            <span className="font-medium">Contacts</span>
-          </li>
-          <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
-            <span className="font-medium">Groups</span>
-          </li>
-          <li className=" rounded mx-1 px-2 py-1 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer">
-            <span className="font-medium">Pages</span>
+          <li
+            onClick={routeJobs}
+            className=" rounded p-2 hover:bg-cyan-950 hover:text-white flex justify-between items-center text-gray-900 cursor-pointer"
+          >
+            <span className="font-medium">Jobs</span>
           </li>
         </ul>
       </div>

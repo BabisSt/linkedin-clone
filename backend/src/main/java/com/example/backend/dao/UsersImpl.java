@@ -2,7 +2,7 @@ package com.example.backend.dao;
 
 import org.springframework.stereotype.Component;
 import com.example.backend.model.Users;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,8 +101,6 @@ public class UsersImpl implements UsersInterface {
             return 0; // User not found
         }
         Users currentUser = currentUserOpt.get();
-        // Update the fields of currentUser with the values from the request, but only
-        // if they are present
         if (user.getName() != null) {
             currentUser.setName(user.getName());
         }
@@ -122,7 +120,8 @@ public class UsersImpl implements UsersInterface {
             currentUser.setUsername(user.getUsername());
         }
         if (user.getPassword() != null) {
-            currentUser.setPassword(user.getPassword());
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
                 PreparedStatement stmt = conn.prepareStatement(
@@ -170,12 +169,15 @@ public class UsersImpl implements UsersInterface {
     @Override
     public int insertUser(Users user) {
         int rowsAffected = 0;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
                 PreparedStatement stmt = conn.prepareStatement(
                         "INSERT INTO users (id, name, email, avatar, bg, about_content, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");) {
 
-            // Set the generated random ID as the first parameter
+            // Hash the password before saving
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+
             stmt.setString(1, generateNumericId());
             stmt.setString(2, user.getName());
             stmt.setString(3, user.getEmail());
@@ -183,7 +185,7 @@ public class UsersImpl implements UsersInterface {
             stmt.setString(5, user.getBg());
             stmt.setString(6, user.getAboutContent());
             stmt.setString(7, user.getUsername());
-            stmt.setString(8, user.getPassword());
+            stmt.setString(8, hashedPassword);
 
             rowsAffected = stmt.executeUpdate();
 
@@ -197,22 +199,26 @@ public class UsersImpl implements UsersInterface {
     @Override
     public Users authenticateUser(String email, String password) {
         Users user = null;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-                PreparedStatement stmt = conn
-                        .prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");) {
+                PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");) {
             stmt.setString(1, email);
-            stmt.setString(2, password);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     user = mapResultSetToUsers(rs);
+
+                    // Verify the password
+                    if (!passwordEncoder.matches(password, user.getPassword())) {
+                        return null; // Password does not match
+                    }
                 }
-                return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null; // Invalid credentials or user not found
+        return user; // Return null if invalid credentials
     }
 
     private Users mapResultSetToUsers(ResultSet rs) throws SQLException {
