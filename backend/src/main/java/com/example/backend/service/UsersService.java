@@ -32,6 +32,10 @@ public class UsersService {
         return usersInterface.updateUserByUserId(userId, user);
     }
 
+    public Users getUserByUsername(String username) {
+        return usersInterface.selectUserByUsername(username);
+    }
+
     public int removeUser(String userId) {
         Optional<Users> optionalUser = getUser(userId);
         if (optionalUser.isPresent()) {

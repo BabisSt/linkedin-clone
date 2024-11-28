@@ -110,6 +110,8 @@ export default function ProfileHeader({ loggedInUser }: ProfileHeaderProps) {
             className="flex justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent w-full "
             onClick={handleAvatarClose}
             placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
             <div
               className="fixed inset-0 opacity-50 backdrop-blur-md w-full"
@@ -119,6 +121,8 @@ export default function ProfileHeader({ loggedInUser }: ProfileHeaderProps) {
               className="relative md:w-[40%] h-[60%] w-[100%]  flex flex-col"
               onClick={(e) => e.stopPropagation()}
               placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
                 <img
@@ -182,6 +186,8 @@ export default function ProfileHeader({ loggedInUser }: ProfileHeaderProps) {
             className="flex justify-center backdrop-blur-md fixed inset-0 z-50 bg-transparent w-full "
             onClick={handleBGClose}
             placeholder={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           >
             <div
               className="fixed inset-0 opacity-50 backdrop-blur-md w-full"
@@ -191,6 +197,8 @@ export default function ProfileHeader({ loggedInUser }: ProfileHeaderProps) {
               className="relative md:w-[40%] h-[60%] w-[100%]  flex flex-col"
               onClick={(e) => e.stopPropagation()}
               placeholder={undefined}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
             >
               <div className="editor rounded-lg flex flex-col text-gray-800 border border-blue-200 p-4 shadow-lg w-full h-full overflow-auto">
                 <img

@@ -2,14 +2,18 @@ package com.example.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.backend.model.Comments;
 import com.example.backend.model.Experiences;
@@ -72,6 +76,18 @@ public class BackendApplication {
 	@ResponseBody
 	public Users fetchUserById(@PathVariable String id) {
 		return usersService.getUserById(id);
+	}
+
+	@GetMapping("/users/username/{username}")
+	@ResponseBody
+	public String fetchUserIdByUsername(@PathVariable String username) {
+		Users user = usersService.getUserByUsername(username);
+		if (user != null) {
+			return user.getId();
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+
+		}
 	}
 
 	@GetMapping("/posts")

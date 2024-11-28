@@ -13,6 +13,8 @@ public interface UsersInterface {
 
     public Optional<Users> selectUserByUserId(String userId);
 
+    public Users selectUserByUsername(String username);
+
     public Optional<Users> selectUserByEmail(String userEmail);
 
     int updateUserByUserId(String userId, Users user);
